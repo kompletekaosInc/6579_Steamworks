@@ -1,5 +1,5 @@
 package org.usfirst.frc.team6579.robot;
 
-public class TankDrive {
+public class ArcadeDrive {
 
 }

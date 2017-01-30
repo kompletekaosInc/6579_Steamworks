@@ -1,61 +1,100 @@
 package org.usfirst.frc.team6579.robot;
 
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
-public class DriveControl {
-	
-	// Define drivetrain motor controllers
 
-	//Left drive
-	VictorSP leftA;
-	VictorSP leftB;
-
-	//Right drive
-	VictorSP rightA;
-	VictorSP rightB;
+public class Drivecontrol {
 	
 	// Define Controllers
 	Joystick joystick;
 	XboxController xbox; 
+	
+	Robot robot;
 	
 	// Controller Values
 	double xboxStickLeft;
 	double xboxStickRight;
 	double joystickX;
 	double joystickY;
+	// Modes
+	boolean tankDrive;
+	boolean invertedMode;
 	
-	double leftPower;
-	double rightPower;
 	
-	
-	public void Drivetrain() {
-		// Initialize drivetrain motor controllers
-		// Left drive
-		leftA = new VictorSP(0);
-		leftB = new VictorSP(1);
-		// Right drive
-		rightA = new VictorSP(2);
-		rightB = new VictorSP(3);
+	public Drivecontrol(Robot robotInit){
 		// Initialize Controllers
 		xbox = new XboxController(1);
 		joystick = new Joystick(2);
+		
+		tankDrive = true;
+		robot = robotInit;
+		
 	}
 	
-	public void tankDrive()
+	// Drive function called periodically
+	public void giveCommands(Robot robot)
+	{
+		drive(robot.drivetrain);
+		climb(robot.climber);
+	}
+	public void climb(Climber climber)
+	{
+		if (joystick.getRawButton(8))
+		{
+			climber.setPower(1);
+		}
+		else if (joystick.getRawButton(7))
+		{
+			climber.setPower(-1);
+		}
+		else
+		{
+			climber.setPower(0);
+		}
+	}
+	public void drive(Drivetrain drivetrain)
+	{
+		if (tankDrive)
+		{
+			tankDrive();
+		}
+		else
+		{
+			arcadeDrive();
+		}
+		if(xbox.getAButton())
+		{
+			tankDrive = false;
+			System.out.println("Changing mode... ");
+		}
+		if(joystick.getRawButton(8))
+		{
+			tankDrive = true;
+			System.out.println("Changing mode... ");
+		}
+	}
+	
+	private void tankDrive()
 	{
 		xboxStickLeft = xbox.getY(Hand.kLeft);
 		xboxStickRight = xbox.getY(Hand.kRight);
-		
-		leftPower = xboxStickLeft;
-		rightPower = xboxStickRight;
-		
-		// Power to Motors
-		leftA.set(leftPower);
-		leftB.set(leftPower);
-		rightA.set(rightPower);
-		rightB.set(rightPower);
-		
+		robot.drivetrain.setPower(xboxStickLeft, xboxStickRight);
+	
+	}	
+	private void arcadeDrive()
+	{
+		joystickX = joystick.getX();
+		joystickY = joystick.getY();
+		if(invertedMode)
+		{
+			robot.drivetrain.setPower(joystickY-joystickX,joystickY+joystickX);
+		}
+		else
+		{
+			robot.drivetrain.setPower(-(joystickY-joystickX),-(joystickY+joystickX));
+			
+		}
 	}
+	
 }
