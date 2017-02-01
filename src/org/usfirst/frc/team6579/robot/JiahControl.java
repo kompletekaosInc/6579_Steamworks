@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class JonahControl extends DriveControl {
+public class JiahControl extends DriveControl {
 	
 	// Define Controllers
 	private Joystick joystick;
@@ -22,7 +22,7 @@ public class JonahControl extends DriveControl {
 	boolean invertedMode;
 	
 	
-	public JonahControl(Robot robotInit){
+	public JiahControl(Robot robotInit){
 		// Initialize Controllers
 		xbox = new XboxController(1);
 	
@@ -37,9 +37,6 @@ public class JonahControl extends DriveControl {
 	{
 		drive(robot.drivetrain);
 		climb(robot.climber);
-		
-		Robot.displayValue("Inverted", invertedMode);
-		Robot.displayValue("Inverted", tankDrive);
 	}
 	public void climb(Climber climber)
 	{
@@ -158,6 +155,11 @@ public class JonahControl extends DriveControl {
 			robot.drivetrain.setPower(xboxStickLeftY - xboxStickLeftX, xboxStickLeftY + xboxStickLeftX);
 		}
 		
+	}
+	private void arcadeDriveAngle(double magnitude, double angle)
+	{
+		
+		robot.drivetrain.setPower(magnitude*Math.sin(angle), magnitude*Math.cos(angle));
 	}
 	
 }

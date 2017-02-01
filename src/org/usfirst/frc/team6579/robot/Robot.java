@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -14,10 +15,13 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
  */
 public class Robot extends IterativeRobot {
 	Timer timer = new Timer();
-	JonahControl drivecontrol = new JonahControl(this); // Changed to Jonah control
+	DriveControlSelection driveControlSelection = new DriveControlSelection(this);
+	DriveControl driveControl = new DriveControl();
 	Drivetrain drivetrain = new Drivetrain();
 	Climber climber = new Climber();
 	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	Camera camera = new Camera();
+	
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -25,8 +29,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		gyro.calibrate();
-		gyro.reset();
+		//gyro.calibrate(); Takes a long time, will have to test if necessary
+		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
+		driveControl = driveControlSelection.returnCurrentType();
 	}
 
 	/**
@@ -34,7 +39,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		timer.reset();
+		// Example code to start timer for counting drive forward time 
+		timer.reset(); 
 		timer.start();
 	}
 
@@ -43,14 +49,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		// Drive for 2 seconds
+		// Example code for driving for 2 seconds
 		if (timer.get() < 2.0) {
-			
-		} else {
-			
+			drivetrain.setPower(0.5, 0.5);
+		} 
+		else {
+			drivetrain.setPower(0, 0);
 		}
 	}
-	
 
 	/**
 	 * This function is called once each time the robot enters tele-operated
@@ -58,7 +64,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
-
 	}
 
 	/**
@@ -66,14 +71,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		drivecontrol.giveCommands(this);		
-	}
+		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
+		displayValue("Gyro angle", gyro.getAngle());
 
-	/**
-	 * This function is called periodically during test mode
-	 */
-	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
+	}
+	
+	// Method for displaying information on the smart dashboard
+	public static void displayValue(String name, Object value) {
+		SmartDashboard.putString(name, value.toString());
 	}
 }
