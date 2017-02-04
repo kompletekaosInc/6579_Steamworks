@@ -2,7 +2,7 @@ package org.usfirst.frc.team6579.robot;
 
 public class DriveControlSelection {
 	
-	private DriveControl currentDriveControl = new LachlanControl();
+	private DriveControl currentDriveControl = new TestDriveControl();
 		
 	//driveControl currentControlType = new LachlanControl();
 	

@@ -25,7 +25,7 @@ public class Robot extends IterativeRobot {
 	DriveControl driveControl;
 	
 	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-	Camera camera = new Camera();
+	//Camera camera = new Camera();
 	
 	
 	/**
