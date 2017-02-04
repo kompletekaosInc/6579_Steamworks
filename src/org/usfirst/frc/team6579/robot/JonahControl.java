@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class JonahControl extends DriveControl {
+public class JonahControl implements DriveControl {
 	
 	// Define Controllers
 	private Joystick joystick;
 	private XboxController xbox; 
 	
-	private Robot robot;
 	
 	// Controller Values
 	private double xboxStickLeftX;
@@ -22,13 +21,12 @@ public class JonahControl extends DriveControl {
 	boolean invertedMode;
 	
 	
-	public JonahControl(Robot robotInit){
+	public JonahControl(){
 		// Initialize Controllers
 		xbox = new XboxController(1);
 	
 		invertedMode = false;
 		tankDrive = true;
-		robot = robotInit;
 		
 	}
 	

@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class LachlanControl extends DriveControl {
+public class LachlanControl implements DriveControl {
 	
 	// Define Controllers
 	Joystick joystick;
 	XboxController xbox; 
 	
-	Robot robot;
 	
 	// Controller Values
 	double xboxStickLeft;
@@ -22,13 +21,13 @@ public class LachlanControl extends DriveControl {
 	boolean invertedMode;
 	
 	
-	public LachlanControl(Robot robotInit){
+	public LachlanControl(){
 		// Initialize Controllers
 		xbox = new XboxController(1);
 		joystick = new Joystick(2);
 		
 		tankDrive = true;
-		robot = robotInit;
+	
 		
 	}
 	
@@ -57,11 +56,11 @@ public class LachlanControl extends DriveControl {
 	{
 		if (tankDrive)
 		{
-			tankDrive();
+			tankDrive(drivetrain);
 		}
 		else
 		{
-			arcadeDrive();
+			arcadeDrive(drivetrain);
 		}
 		if(xbox.getAButton())
 		{
@@ -75,24 +74,24 @@ public class LachlanControl extends DriveControl {
 		}
 	}
 	
-	private void tankDrive()
+	private void tankDrive(Drivetrain drivetrain)
 	{
 		xboxStickLeft = xbox.getY(Hand.kLeft);
 		xboxStickRight = xbox.getY(Hand.kRight);
-		robot.drivetrain.setPower(xboxStickLeft, xboxStickRight);
+		drivetrain.setPower(xboxStickLeft, xboxStickRight);
 	
 	}	
-	private void arcadeDrive()
+	private void arcadeDrive(Drivetrain drivetrain)
 	{
 		joystickX = joystick.getX();
 		joystickY = joystick.getY();
 		if(invertedMode)
 		{
-			robot.drivetrain.setPower(joystickY-joystickX,joystickY+joystickX);
+			drivetrain.setPower(joystickY-joystickX,joystickY+joystickX);
 		}
 		else
 		{
-			robot.drivetrain.setPower(-(joystickY-joystickX),-(joystickY+joystickX));
+			drivetrain.setPower(-(joystickY-joystickX),-(joystickY+joystickX));
 			
 		}
 	}

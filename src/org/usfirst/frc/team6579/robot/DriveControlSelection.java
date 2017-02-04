@@ -1,78 +1,66 @@
 package org.usfirst.frc.team6579.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.Joystick;
-
 public class DriveControlSelection {
 	
-	Robot robot;
-	JonahControl jonahControl;
-	LachlanControl lachlanControl;
-	JiahControl jiahControl;
+	private DriveControl currentDriveControl = new LachlanControl();
 		
-	driveControl currentControlType;
+	//driveControl currentControlType = new LachlanControl();
 	
-	public enum driveControl {
-		JonahControl, JiahControl,LachlanControl, JoshControl
-	}
+
+
+
+
+//	public enum driveControl {
+//		JonahControl, JiahControl,LachlanControl, JoshControl
+//	}
 	
-	public DriveControlSelection(){
-		currentControlType = driveControl.JonahControl;
-		initDriveControls();
-		currentControlType = driveControl.JonahControl;
-	}	
-	public DriveControlSelection(Robot robotInit){
-		robot = robotInit;
-		initDriveControls();
-		currentControlType = driveControl.JonahControl;		
-	}
-	private void initDriveControls()
-	{
-		jonahControl = new JonahControl(robot);
-		lachlanControl = new LachlanControl(robot);
-		jiahControl = new JiahControl(robot);
-	}
-	public void setControl(driveControl controlType)
-	{
-		currentControlType = controlType;
-	}
-	
-	// Drive function called periodically
-	public void giveCommands(Robot robot)
-	{
-		if (currentControlType == driveControl.JonahControl)
-		{
-			jonahControl.giveCommands(robot);
-		}
-		else if (currentControlType == driveControl.LachlanControl)
-		{
-			lachlanControl.giveCommands(robot);
-		}
-		else if (currentControlType == driveControl.JiahControl)
-		{
-			jiahControl.giveCommands(robot);
-		}
-	}
-	public DriveControl returnCurrentType()
-	{
-		if (currentControlType == driveControl.JonahControl)
-		{
-			return jonahControl;
-		}
-		else if (currentControlType == driveControl.LachlanControl)
-		{
-			return lachlanControl;
-		}
-		else if (currentControlType == driveControl.JiahControl)
-		{
-			return jiahControl;
-		}
-		return jonahControl;
-	}
+//	public DriveControlSelection(){
+//		currentControlType = driveControl.JonahControl;
+//		initDriveControls();
+//		currentControlType = driveControl.JonahControl;
+//	}	
+//	public DriveControlSelection(Robot robotInit){
+//		robot = robotInit;
+//		initDriveControls();
+//		currentControlType = driveControl.JonahControl;		
+//	}
+//	private void initDriveControls()
+//	{
+//		jonahControl = new JonahControl(robot);
+//		lachlanControl = new LachlanControl(robot);
+//		jiahControl = new JiahControl(robot);
+//	}
+//	public void setControl(driveControl controlType)
+//	{
+//		currentControlType = controlType;
+//	}
+
+//	public DriveControl returnCurrentType()
+//	{
+//		if (currentControlType == driveControl.JonahControl)
+//		{
+//			return jonahControl;
+//		}
+//		else if (currentControlType == driveControl.LachlanControl)
+//		{
+//			return lachlanControl;
+//		}
+//		else if (currentControlType == driveControl.JiahControl)
+//		{
+//			return jiahControl;
+//		}
+//		return jonahControl;
+//	}
 	
 
 	
-
+	
+	
+	public DriveControl getCurrentDriveControl() {
+		return currentDriveControl;
+	}
+	protected void setCurrentDriveControl(DriveControl currentDriveControl) {
+		this.currentDriveControl = currentDriveControl;
+	}
 	
 }

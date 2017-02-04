@@ -14,11 +14,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	Timer timer = new Timer();
-	DriveControlSelection driveControlSelection = new DriveControlSelection(this);
-	DriveControl driveControl = new DriveControl();
+	// subsystems
 	Drivetrain drivetrain = new Drivetrain();
-	Climber climber = new Climber();
+	Climber climber = new Climber();   // Never Tested
+	
+	
+	// attributes
+	
+	Timer timer = new Timer();
+	DriveControlSelection driveControlSelection = new DriveControlSelection();
+	DriveControl driveControl;
+	
 	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	Camera camera = new Camera();
 	
@@ -31,7 +37,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		//gyro.calibrate(); Takes a long time, will have to test if necessary
 		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
-		driveControl = driveControlSelection.returnCurrentType();
+		driveControl = driveControlSelection.getCurrentDriveControl();
 	}
 
 	/**
