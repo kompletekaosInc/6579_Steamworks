@@ -28,6 +28,7 @@ public class TestDriveControl implements DriveControl
 	public void giveCommands(Robot robot) 
 	{
 		arcadeDrive(robot.drivetrain);
+		climbing(robot.climber);
 	}
 
 
@@ -43,14 +44,23 @@ public class TestDriveControl implements DriveControl
 			
 	}
 	
-//	private void climbing(Climber climber)
-//	{
-//		
-//		if (stick.getRawButton(1))
-//		{
-//			
-//		}
-//	}
+	private void climbing(Climber climber)
+	{
+		stickThrottle = ((-stick.getThrottle() + 1)/2);
+		if (stick.getRawButton(8))
+		{
+			climber.setPower(stickThrottle);
+		}		
+		else if (stick.getRawButton(7))
+		{
+			climber.setPower(-stickThrottle);
+		}
+		else
+		{
+			climber.setPower(0);
+		}
+		System.out.println(stickThrottle);
+	}
 	
 
 }
