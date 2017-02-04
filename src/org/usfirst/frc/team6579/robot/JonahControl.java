@@ -2,12 +2,10 @@ package org.usfirst.frc.team6579.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.Joystick;
 
 public class JonahControl implements DriveControl {
 	
 	// Define Controllers
-	private Joystick joystick;
 	private XboxController xbox; 
 	
 	
@@ -59,16 +57,16 @@ public class JonahControl implements DriveControl {
 		checkChangeMode();
 		if (checkSmallAdjustment())
 		{
-			smallAdjustment();
+			smallAdjustment(drivetrain);
 		}
 		else {
 			if (tankDrive)
 			{
-				tankDrive();
+				tankDrive(drivetrain);
 			}
 			else
 			{
-				arcadeDrive();
+				arcadeDrive(drivetrain);
 			}
 		}
 
@@ -85,7 +83,7 @@ public class JonahControl implements DriveControl {
 		}
 		return false;
 	}
-	private void smallAdjustment()
+	private void smallAdjustment(Drivetrain drivetrain)
 	{
 		double leftSpeed = 0;
 		double rightSpeed = 0;
@@ -99,10 +97,10 @@ public class JonahControl implements DriveControl {
 		}
 		if (invertedMode)
 		{
-			robot.drivetrain.setPower(leftSpeed, rightSpeed);
+			drivetrain.setPower(leftSpeed, rightSpeed);
 		}
 		else{
-			robot.drivetrain.setPower(-leftSpeed, -rightSpeed);
+			drivetrain.setPower(-leftSpeed, -rightSpeed);
 		}
 	}
 	private void checkChangeMode()
@@ -128,32 +126,32 @@ public class JonahControl implements DriveControl {
 			System.out.println("Changing from inverted mode");
 		}
 	}
-	private void tankDrive()
+	private void tankDrive(Drivetrain drivetrain)
 	{
 		xboxStickLeftX = xbox.getY(Hand.kLeft);
 		xboxStickRight = xbox.getY(Hand.kRight);
 		
 		if(invertedMode)
 		{
-			robot.drivetrain.setPower(-xboxStickLeftX, -xboxStickRight);
+			drivetrain.setPower(-xboxStickLeftX, -xboxStickRight);
 		}
 		else
 		{
-			robot.drivetrain.setPower(xboxStickLeftX, xboxStickRight);
+			drivetrain.setPower(xboxStickLeftX, xboxStickRight);
 		}
 	
 	}	
-	private void arcadeDrive()
+	private void arcadeDrive(Drivetrain drivetrain)
 	{
 		xboxStickLeftX = xbox.getX(Hand.kLeft);
 		xboxStickLeftY = xbox.getY(Hand.kLeft);
 		if(invertedMode)
 		{
-			robot.drivetrain.setPower(-(xboxStickLeftY - xboxStickLeftX), -(xboxStickLeftY + xboxStickLeftX));
+			drivetrain.setPower(-(xboxStickLeftY - xboxStickLeftX), -(xboxStickLeftY + xboxStickLeftX));
 		}
 		else
 		{
-			robot.drivetrain.setPower(xboxStickLeftY - xboxStickLeftX, xboxStickLeftY + xboxStickLeftX);
+			drivetrain.setPower(xboxStickLeftY - xboxStickLeftX, xboxStickLeftY + xboxStickLeftX);
 		}
 		
 	}
