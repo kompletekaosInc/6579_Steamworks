@@ -18,6 +18,7 @@ public class Robot extends IterativeRobot
 	// subsystems
 	Drivetrain drivetrain = new Drivetrain();
 	Climber climber = new Climber();   // Never Tested
+	FuelSystem fuelSystem = new FuelSystem();
 	
 	
 	// attributes

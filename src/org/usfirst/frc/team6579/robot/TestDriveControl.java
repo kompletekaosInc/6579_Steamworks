@@ -29,6 +29,7 @@ public class TestDriveControl implements DriveControl
 	{
 		arcadeDrive(robot.drivetrain);
 		climbing(robot.climber);
+		manageFuelFlap(robot.fuelSystem);
 	}
 
 
@@ -59,8 +60,18 @@ public class TestDriveControl implements DriveControl
 		{
 			climber.setPower(0);
 		}
-		System.out.println(stickThrottle);
+		//System.out.println(stickThrottle);
 	}
-	
 
+	private void manageFuelFlap(FuelSystem fuelSystem){
+		if (stick.getRawButton(3)){
+			fuelSystem.raiseFlap();
+		}
+		else if (stick.getRawButton(4)){
+			fuelSystem.lowerFlap();
+		}
+		else{
+			fuelSystem.stopFuelFlap();
+		}
+	}
 }

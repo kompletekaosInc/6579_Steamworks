@@ -3,6 +3,7 @@ package org.usfirst.frc.team6579.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -18,7 +19,7 @@ public class FuelSystem {
 	private DigitalInput upLimitSwitch;
 	private DigitalInput downLimitSwitch;
 	
-	private static final double MOTOR_POWER = 0.2;
+	private static final double MOTOR_POWER = 0.5;
 	private static final double STOP_MOTOR = 0;
 	/**
 	 * This is the method for moving the fuel flap
@@ -28,7 +29,7 @@ public class FuelSystem {
 	 */
 	public FuelSystem(){
 		
-		//
+		//review post-it note 
 		fuelMotor = new VictorSP(5);
 		upLimitSwitch = new DigitalInput(8);
 		downLimitSwitch = new DigitalInput(9);	
@@ -39,10 +40,19 @@ public class FuelSystem {
 	}
 	public void raiseFlap(){
 	    //this moves the flap up
-		fuelMotor.set(MOTOR_POWER);
-        while (upLimitSwitch.get()){
-        	fuelMotor.set(STOP_MOTOR);
-        }
+		boolean upperLimitReached = !upLimitSwitch.get(); // TRUE = flap at max
+		
+		SmartDashboard.putBoolean("upperLimitReached",upperLimitReached);
+		
+		if (upperLimitReached){
+			stopFuelFlap();
+		}
+		else {
+			fuelMotor.set(-MOTOR_POWER);
+		}
+		
+		
+        
 	}
 	
 	/**
@@ -50,12 +60,21 @@ public class FuelSystem {
 	 */
 	public void lowerFlap(){
 		//this moves the flap down
-		fuelMotor.set(-MOTOR_POWER);
 		
-		//this stops the motor once it hits the down limit switch (port 9)
-		while (downLimitSwitch.get()){
-			fuelMotor.set(STOP_MOTOR);
+		
+		boolean lowerLimitReached = !downLimitSwitch.get(); //TRUE = flap at minimum
+		
+		SmartDashboard.putBoolean("lowerLimitReached", lowerLimitReached);
+		
+		if (lowerLimitReached){
+			stopFuelFlap();
 		}
+		else {
+			fuelMotor.set(MOTOR_POWER);
+		}
+	}
+	public void stopFuelFlap(){
+		fuelMotor.set(STOP_MOTOR);
 	}
 	
 }
