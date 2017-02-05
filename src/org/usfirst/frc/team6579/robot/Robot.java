@@ -79,8 +79,11 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void teleopPeriodic() {
+		fuelSystem.displayStatus();
+		
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 		displayValue("Gyro angle", gyro.getAngle());
+		
 
 	}
 	

@@ -21,6 +21,10 @@ public class FuelSystem {
 	
 	private static final double MOTOR_POWER = 0.5;
 	private static final double STOP_MOTOR = 0;
+	
+	private boolean upperLimitReached = true;
+	private boolean lowerLimitReached = true;
+	
 	/**
 	 * This is the method for moving the fuel flap
 	 * motor is in port 5
@@ -33,26 +37,29 @@ public class FuelSystem {
 		fuelMotor = new VictorSP(5);
 		upLimitSwitch = new DigitalInput(8);
 		downLimitSwitch = new DigitalInput(9);	
+		
+	}	
+	
+	public void displayStatus(){
+		upperLimitReached = !upLimitSwitch.get();
+		lowerLimitReached = !downLimitSwitch.get();
+		
+		SmartDashboard.putBoolean("upperLimitReached", upperLimitReached);
+		SmartDashboard.putBoolean("lowerLimitReached", lowerLimitReached);
+	}
 	
 	/**
 	 * This moves the flap up
 	 */
-	}
 	public void raiseFlap(){
 	    //this moves the flap up
-		boolean upperLimitReached = !upLimitSwitch.get(); // TRUE = flap at max
-		
-		SmartDashboard.putBoolean("upperLimitReached",upperLimitReached);
 		
 		if (upperLimitReached){
 			stopFuelFlap();
 		}
 		else {
 			fuelMotor.set(-MOTOR_POWER);
-		}
-		
-		
-        
+		}  
 	}
 	
 	/**

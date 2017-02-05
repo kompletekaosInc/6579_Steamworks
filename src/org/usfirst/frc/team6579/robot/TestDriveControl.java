@@ -8,6 +8,7 @@ package org.usfirst.frc.team6579.robot;
  */
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TestDriveControl implements DriveControl 
 {
@@ -48,11 +49,11 @@ public class TestDriveControl implements DriveControl
 	private void climbing(Climber climber)
 	{
 		stickThrottle = ((-stick.getThrottle() + 1)/2);
-		if (stick.getRawButton(8))
-		{
-			climber.setPower(stickThrottle);
-		}		
-		else if (stick.getRawButton(7))
+		//if (stick.getRawButton(8))
+		//{
+		//	climber.setPower(stickThrottle);
+		//}		
+		if (stick.getRawButton(7))
 		{
 			climber.setPower(-stickThrottle);
 		}
@@ -60,7 +61,7 @@ public class TestDriveControl implements DriveControl
 		{
 			climber.setPower(0);
 		}
-		//System.out.println(stickThrottle);
+		SmartDashboard.putNumber("throttle",stickThrottle);
 	}
 
 	private void manageFuelFlap(FuelSystem fuelSystem){
