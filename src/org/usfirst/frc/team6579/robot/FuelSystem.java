@@ -56,10 +56,13 @@ public class FuelSystem {
 		
 		if (upperLimitReached){
 			stopFuelFlap();
+			Robot.displayValue("Flap State", "Upper limit reached");
 		}
 		else {
 			fuelMotor.set(-MOTOR_POWER);
-		}  
+			Robot.displayValue("Flap State", "Raising");
+		} 
+
 	}
 	
 	/**
@@ -75,13 +78,16 @@ public class FuelSystem {
 		
 		if (lowerLimitReached){
 			stopFuelFlap();
+			Robot.displayValue("Flap State", "Lower limit reached");
 		}
 		else {
 			fuelMotor.set(MOTOR_POWER);
+			Robot.displayValue("Flap State", "Lowering");
 		}
 	}
 	public void stopFuelFlap(){
 		fuelMotor.set(STOP_MOTOR);
+		Robot.displayValue("Flap State", "Stopped");
 	}
 	
 }

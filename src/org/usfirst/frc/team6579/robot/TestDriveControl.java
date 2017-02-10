@@ -29,7 +29,7 @@ public class TestDriveControl implements DriveControl
 	public void giveCommands(Robot robot) 
 	{
 		arcadeDrive(robot.drivetrain);
-		climbing(robot.climber);
+		manageClimber(robot.climber);
 		manageFuelFlap(robot.fuelSystem);
 	}
 
@@ -46,22 +46,19 @@ public class TestDriveControl implements DriveControl
 			
 	}
 	
-	private void climbing(Climber climber)
+	private void manageClimber(Climber climber)
 	{
 		stickThrottle = ((-stick.getThrottle() + 1)/2);
-		//if (stick.getRawButton(8))
-		//{
-		//	climber.setPower(stickThrottle);
-		//}		
+
 		if (stick.getRawButton(7))
 		{
-			climber.setPower(-stickThrottle);
+            climber.setPower(-stickThrottle);
 		}
 		else
 		{
 			climber.setPower(0);
 		}
-		SmartDashboard.putNumber("throttle",stickThrottle);
+		Robot.displayValue("Joystick Throttle", stickThrottle);
 	}
 
 	private void manageFuelFlap(FuelSystem fuelSystem){

@@ -1,5 +1,8 @@
 package org.usfirst.frc.team6579.robot;
 
+/**
+ * This class is for controlling the climber module
+ */
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class Climber {
@@ -17,6 +20,7 @@ public class Climber {
 	{
 		climbA.set(power);
 		climbB.set(power);
+		Robot.displayValue("Climber Speed", power);
 	}
 		
 }

@@ -27,8 +27,9 @@ public class Robot extends IterativeRobot
 	DriveControlSelection driveControlSelection = new DriveControlSelection();
 	DriveControl driveControl;
 	
-	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-	//Camera camera = new Camera();
+    ADXRS450_Gyro gyro = null;
+
+	Camera camera = new Camera();
 	
 	
 	/**
@@ -38,7 +39,15 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() {
 		//gyro.calibrate(); Takes a long time, will have to test if necessary
-		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
+		try {
+            gyro = new ADXRS450_Gyro();
+            Robot.displayValue("Gyro Installed", "yes");
+    		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
+
+        } catch (Exception e) {
+            System.out.println("Gyro not installed correctly" + e.toString());
+            Robot.displayValue("Gyro Installed", "no");
+        }
 		driveControl = driveControlSelection.getCurrentDriveControl();
 	}
 
@@ -64,6 +73,7 @@ public class Robot extends IterativeRobot
 		else {
 			drivetrain.setPower(0, 0);
 		}
+		displayValue("Timer", timer.get());
 	}
 
 	/**

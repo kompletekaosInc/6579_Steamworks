@@ -1,4 +1,8 @@
 package org.usfirst.frc.team6579.robot;
+
+/** This class is for managing the cameras on the robot, and switching between multiple cameras in order to save bandwidth
+ * 
+ */
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.cscore.UsbCamera;
 
@@ -9,12 +13,7 @@ public class Camera {
 	public Camera()
 	{
 		currentCamera = 0; //Default camera
-		try {
-			startFrontCamera();
-		}
-		catch (Exception e){
-			
-		}
+		startFrontCamera();
 
 	}
 	// TODO: Test code for switching between front and back camera to save bandwidth
@@ -34,14 +33,24 @@ public class Camera {
 	
 	private void startFrontCamera()
 	{
-		cameraFront = CameraServer.getInstance().startAutomaticCapture(currentCamera);
-		cameraFront.setFPS(30);
-		cameraFront.setResolution(320, 240);
+		try {
+			cameraFront = CameraServer.getInstance().startAutomaticCapture(currentCamera);
+			cameraFront.setFPS(30);
+			cameraFront.setResolution(320, 240);
+		}
+		catch (Exception e){
+			
+		}
 	}
 	private void startBackCamera()
 	{
-		cameraBack = CameraServer.getInstance().startAutomaticCapture(1-currentCamera);
-		cameraBack.setFPS(30);
-		cameraBack.setResolution(320, 240);
+		try {
+			cameraBack = CameraServer.getInstance().startAutomaticCapture(1-currentCamera);
+			cameraBack.setFPS(30);
+			cameraBack.setResolution(320, 240);
+		}
+		catch (Exception e){
+			
+		}
 	}
 }
