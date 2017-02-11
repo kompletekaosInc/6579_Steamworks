@@ -53,6 +53,7 @@ public class FuelSystem {
 	 */
 	public void raiseFlap(){
 	    //this moves the flap up
+		//ToDo: Check motor rotation is correct and limit switches are correct
 		
 		if (upperLimitReached){
 			stopFuelFlap();
@@ -70,7 +71,7 @@ public class FuelSystem {
 	 */
 	public void lowerFlap(){
 		//this moves the flap down
-		
+		//ToDo: Check motor rotation is correct and limit switches are correct
 		
 		boolean lowerLimitReached = !downLimitSwitch.get(); //TRUE = flap at minimum
 		
@@ -85,6 +86,9 @@ public class FuelSystem {
 			Robot.displayValue("Flap State", "Lowering");
 		}
 	}
+
+	//ToDo: Create the third method which goes down to offloading height
+
 	public void stopFuelFlap(){
 		fuelMotor.set(STOP_MOTOR);
 		Robot.displayValue("Flap State", "Stopped");

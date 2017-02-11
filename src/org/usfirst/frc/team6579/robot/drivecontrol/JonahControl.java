@@ -1,9 +1,13 @@
-package org.usfirst.frc.team6579.robot;
+package org.usfirst.frc.team6579.robot.drivecontrol;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import org.usfirst.frc.team6579.robot.Climber;
+import org.usfirst.frc.team6579.robot.Drivetrain;
+import org.usfirst.frc.team6579.robot.Robot;
+import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 
-public class JonahControl implements DriveControl {
+public class JonahControl extends DriveControl {
 	
 	// Define Controllers
 	private XboxController xbox; 
@@ -31,8 +35,8 @@ public class JonahControl implements DriveControl {
 	// Drive function called periodically
 	public void giveCommands(Robot robot)
 	{
-		drive(robot.drivetrain);
-		climb(robot.climber);
+		drive(robot.getDrivetrain());
+		climb(robot.getClimber());
 		
 		Robot.displayValue("Inverted", invertedMode);
 		Robot.displayValue("Inverted", tankDrive);
@@ -141,7 +145,7 @@ public class JonahControl implements DriveControl {
 		}
 	
 	}	
-	private void arcadeDrive(Drivetrain drivetrain)
+	protected void arcadeDrive(Drivetrain drivetrain)
 	{
 		xboxStickLeftX = xbox.getX(Hand.kLeft);
 		xboxStickLeftY = xbox.getY(Hand.kLeft);

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -14,22 +15,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot 
 {
-	
-	// subsystems
-	Drivetrain drivetrain = new Drivetrain();
-	Climber climber = new Climber();   // Never Tested
-	FuelSystem fuelSystem = new FuelSystem();
+
+
+
+    // subsystems
+	private Drivetrain drivetrain = new Drivetrain();
+	private Climber climber = new Climber();   // Never Tested
+	private FuelSystem fuelSystem = new FuelSystem();
 	
 	
 	// attributes
 	
-	Timer timer = new Timer();
-	DriveControlSelection driveControlSelection = new DriveControlSelection();
-	DriveControl driveControl;
-	
-    ADXRS450_Gyro gyro = null;
+	private Timer timer = new Timer();
 
-	Camera camera = new Camera();
+	private DriveControl driveControl;
+	
+    private ADXRS450_Gyro gyro = null;
+
+	private Camera camera = new Camera();
 	
 	
 	/**
@@ -48,7 +51,10 @@ public class Robot extends IterativeRobot
             System.out.println("Gyro not installed correctly" + e.toString());
             Robot.displayValue("Gyro Installed", "no");
         }
-		driveControl = driveControlSelection.getCurrentDriveControl();
+
+		// In future, create selector for if there is more than one drive control
+		driveControl = new DriveControl();
+
 	}
 
 	/**
@@ -101,4 +107,18 @@ public class Robot extends IterativeRobot
 	public static void displayValue(String name, Object value) {
 		SmartDashboard.putString(name, value.toString());
 	}
+
+	// simple accessor methods
+
+    public Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
+
+    public Climber getClimber() {
+        return climber;
+    }
+
+    public FuelSystem getFuelSystem() {
+        return fuelSystem;
+    }
 }

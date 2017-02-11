@@ -1,10 +1,14 @@
-package org.usfirst.frc.team6579.robot;
+package org.usfirst.frc.team6579.robot.drivecontrol;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
+import org.usfirst.frc.team6579.robot.Climber;
+import org.usfirst.frc.team6579.robot.Drivetrain;
+import org.usfirst.frc.team6579.robot.Robot;
+import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 
-public class LachlanControl implements DriveControl {
+public class LachlanControl extends DriveControl {
 	
 	// Define Controllers
 	Joystick joystick;
@@ -34,8 +38,8 @@ public class LachlanControl implements DriveControl {
 	// Drive function called periodically
 	public void giveCommands(Robot robot)
 	{
-		drive(robot.drivetrain);
-		climb(robot.climber);
+		drive(robot.getDrivetrain());
+		climb(robot.getClimber());
 	}
 	public void climb(Climber climber)
 	{
@@ -81,7 +85,7 @@ public class LachlanControl implements DriveControl {
 		drivetrain.setPower(xboxStickLeft, xboxStickRight);
 	
 	}	
-	private void arcadeDrive(Drivetrain drivetrain)
+	protected void arcadeDrive(Drivetrain drivetrain)
 	{
 		joystickX = joystick.getX();
 		joystickY = joystick.getY();
