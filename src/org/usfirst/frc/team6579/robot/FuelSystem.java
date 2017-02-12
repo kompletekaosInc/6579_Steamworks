@@ -60,7 +60,8 @@ public class FuelSystem {
 			Robot.displayValue("Flap State", "Upper limit reached");
 		}
 		else {
-			fuelMotor.set(-MOTOR_POWER);
+			//fuelMotor.set(-MOTOR_POWER); changed for the rotation of fuel snowblower. 12/02
+			fuelMotor.set(MOTOR_POWER);
 			Robot.displayValue("Flap State", "Raising");
 		} 
 
@@ -82,8 +83,9 @@ public class FuelSystem {
 			Robot.displayValue("Flap State", "Lower limit reached");
 		}
 		else {
-			fuelMotor.set(MOTOR_POWER);
-			Robot.displayValue("Flap State", "Lowering");
+			//fuelMotor.set(MOTOR_POWER); changed for the rotation of fuel snowblower. 12/02
+			fuelMotor.set(-MOTOR_POWER);
+            Robot.displayValue("Flap State", "Lowering");
 		}
 	}
 
