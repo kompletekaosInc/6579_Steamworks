@@ -89,8 +89,13 @@ public class DriveControl {
             fuelSystem.raiseFlap();
         }
         else if (stick.getRawButton(4)){
-            fuelSystem.lowerFlap();
+            fuelSystem.offloadFuelFlap();
+
         }
+        else if (stick.getRawButton(7)){
+            fuelSystem.fullyLowerFlap();
+        }
+
         else{
             fuelSystem.stopFuelFlap();
         }
