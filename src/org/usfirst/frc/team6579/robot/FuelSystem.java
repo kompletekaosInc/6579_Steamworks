@@ -41,13 +41,19 @@ public class FuelSystem {
 		upLimitSwitch = new DigitalInput(9);
 		downLimitSwitch = new DigitalInput(7);
 		offloadLimitSwitch = new DigitalInput(8);
-	}	
-	
-	public void displayStatus(){
+
+		getSwitchStatus();
+	}
+
+	/**
+	 * Read the value of all the Fuel switches to the boolean variables.  Display this to SmartDashboard.
+	 */
+	public void getSwitchStatus(){
 		upperLimitReached = !upLimitSwitch.get();
 		lowerLimitReached = !downLimitSwitch.get();
 		offloadLimitReached = !offloadLimitSwitch.get();
 
+		// and display the current values to SmartDashboard
 		SmartDashboard.putBoolean("upperLimitReached", upperLimitReached);
 		SmartDashboard.putBoolean("lowerLimitReached", lowerLimitReached);
 		SmartDashboard.putBoolean("offloadLimitReached", offloadLimitReached);
@@ -60,7 +66,9 @@ public class FuelSystem {
 	public void raiseFlap(){
 	    //this moves the flap up
 		//ToDo: Check motor rotation is correct and limit switches are correct
-		
+		getSwitchStatus();
+
+
 		if (upperLimitReached){
 			stopFuelFlap();
 			Robot.displayValue("Flap State", "Upper limit reached");
@@ -81,10 +89,8 @@ public class FuelSystem {
 	public void fullyLowerFlap(){
 		//this moves the flap down
 		//ToDo: Check motor rotation is correct and limit switches are correct
-		
-		boolean lowerLimitReached = !downLimitSwitch.get(); //TRUE = flap at minimum
-		
-		SmartDashboard.putBoolean("lowerLimitReached", lowerLimitReached);
+
+		getSwitchStatus();
 		
 		if (lowerLimitReached){
 			stopFuelFlap();
@@ -105,6 +111,7 @@ public class FuelSystem {
      */
     public void offloadFuelFlap(){
 	    //this moves the fuel flap to the offload position
+		getSwitchStatus();
 
         if(offloadLimitReached){
             stopFuelFlap();

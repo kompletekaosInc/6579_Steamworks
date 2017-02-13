@@ -95,7 +95,8 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void teleopPeriodic() {
-		fuelSystem.displayStatus();
+		// TODO: fix, this is short term HACK to ensure that the switch values are displayed with updates through out teleop
+		fuelSystem.getSwitchStatus();
 		
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 		displayValue("Gyro angle", gyro.getAngle());
