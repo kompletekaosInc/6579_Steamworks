@@ -111,7 +111,7 @@ public class FuelSystem {
 
         }
         else {
-            fuelMotor.set(MOTOR_POWER);
+            fuelMotor.set(-MOTOR_POWER);
 
         }
 
