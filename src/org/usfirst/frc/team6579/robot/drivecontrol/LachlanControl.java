@@ -3,10 +3,9 @@ package org.usfirst.frc.team6579.robot.drivecontrol;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team6579.robot.Climber;
-import org.usfirst.frc.team6579.robot.Drivetrain;
+import org.usfirst.frc.team6579.robot.subsystem.Climber;
+import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team6579.robot.Robot;
-import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 
 public class LachlanControl extends DriveControl {
 	

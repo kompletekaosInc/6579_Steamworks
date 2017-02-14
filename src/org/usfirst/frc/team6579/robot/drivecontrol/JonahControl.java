@@ -2,10 +2,9 @@ package org.usfirst.frc.team6579.robot.drivecontrol;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import org.usfirst.frc.team6579.robot.Climber;
-import org.usfirst.frc.team6579.robot.Drivetrain;
+import org.usfirst.frc.team6579.robot.subsystem.Climber;
+import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team6579.robot.Robot;
-import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 
 public class JonahControl extends DriveControl {
 	
@@ -38,8 +37,8 @@ public class JonahControl extends DriveControl {
 		drive(robot.getDrivetrain());
 		climb(robot.getClimber());
 		
-		Robot.displayValue("Inverted", invertedMode);
-		Robot.displayValue("Inverted", tankDrive);
+		//Robot.displayValue("Inverted", invertedMode);
+		//Robot.displayValue("Inverted", tankDrive);
 	}
 	public void climb(Climber climber)
 	{

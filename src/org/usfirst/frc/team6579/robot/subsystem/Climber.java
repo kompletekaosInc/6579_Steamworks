@@ -1,11 +1,13 @@
-package org.usfirst.frc.team6579.robot;
+package org.usfirst.frc.team6579.robot.subsystem;
 
 /**
  * This class is for controlling the climber module
  */
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
 
-public class Climber {
+public class Climber implements SubSystem{
 
 	private VictorSP climbA;
 	private VictorSP climbB;
@@ -20,7 +22,12 @@ public class Climber {
 	{
 		climbA.set(power);
 		climbB.set(power);
-		Robot.displayValue("Climber Speed", power);
+		SmartDashboard.putNumber("Climber Speed", power);
 	}
-		
+
+
+	@Override
+	public void publishStats() {
+
+	}
 }

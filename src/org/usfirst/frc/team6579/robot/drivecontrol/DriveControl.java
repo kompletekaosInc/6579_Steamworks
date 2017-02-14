@@ -1,9 +1,10 @@
 package org.usfirst.frc.team6579.robot.drivecontrol;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team6579.robot.Climber;
-import org.usfirst.frc.team6579.robot.Drivetrain;
-import org.usfirst.frc.team6579.robot.FuelSystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team6579.robot.subsystem.Climber;
+import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
+import org.usfirst.frc.team6579.robot.subsystem.FuelSystem;
 import org.usfirst.frc.team6579.robot.Robot;
 
 /**
@@ -45,10 +46,21 @@ public class DriveControl {
     {
         double stickX;
         double stickY;
+        double leftPowerMath;
+        double rightPowerMath;
         stickX = stick.getX();
         stickY = stick.getY();
+        leftPowerMath = (stickY - stickX);
+        rightPowerMath = (stickY + stickX);
 
-        drivetrain.setPower((stickY - stickX),(stickY + stickX));
+        if (stick.getRawButton(1))
+        {
+            drivetrain.setInvertedPower(leftPowerMath, rightPowerMath);
+        }
+        else
+        {
+            drivetrain.setPower(leftPowerMath, rightPowerMath);
+        }
 
     }
 
@@ -72,7 +84,7 @@ public class DriveControl {
         {
             climber.setPower(0);
         }
-        Robot.displayValue("Joystick Throttle", stickThrottle);
+        SmartDashboard.putNumber("Joystick Throttle", stickThrottle);
     }
 
     /**

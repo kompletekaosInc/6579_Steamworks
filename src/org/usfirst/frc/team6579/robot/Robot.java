@@ -5,6 +5,14 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
+import org.usfirst.frc.team6579.robot.subsystem.Climber;
+import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
+import org.usfirst.frc.team6579.robot.subsystem.FuelSystem;
+import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,10 +27,14 @@ public class Robot extends IterativeRobot
 
 
     // subsystems
-	private Drivetrain drivetrain = new Drivetrain();
-	private Climber climber = new Climber();   // Never Tested
-	private FuelSystem fuelSystem = new FuelSystem();
-	
+	private Drivetrain drivetrain = null;
+	private Climber climber = null;
+	private FuelSystem fuelSystem = null;
+
+
+	// manage a collection of all the subsystems for the robot
+	private List subSystems = new ArrayList();
+
 	
 	// attributes
 	
@@ -41,20 +53,33 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void robotInit() {
-		//gyro.calibrate(); Takes a long time, will have to test if necessary
+
 		try {
+			// manage the collection of SubSystems
+			drivetrain = new Drivetrain();
+			climber = new Climber();
+			fuelSystem = new FuelSystem();
+
+			subSystems.add( drivetrain );
+			subSystems.add( climber );
+			subSystems.add( fuelSystem );
+
             gyro = new ADXRS450_Gyro();
-            Robot.displayValue("Gyro Installed", "yes");
+			SmartDashboard.putString("Gyro Installed", "yes");
+			//gyro.calibrate(); Takes a long time, will have to test if necessary
     		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
 
         } catch (Exception e) {
             System.out.println("Gyro not installed correctly" + e.toString());
-            Robot.displayValue("Gyro Installed", "no");
+			SmartDashboard.putString("Gyro Installed", "no");
         }
 
 		// In future, create selector for if there is more than one drive control
 		driveControl = new DriveControl();
 
+
+		// publish stats to the smart dashboard for all known subsystems
+		publishSubSystemStats();  // TODO: in future create a new thread / period to constantly call this from this point onwards
 	}
 
 	/**
@@ -72,6 +97,10 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void autonomousPeriodic() {
+
+		//Publishes the subsystem status'
+		publishSubSystemStats();
+
 		// Example code for driving for 2 seconds
 		if (timer.get() < 2.0) {
 			drivetrain.setPower(0.5, 0.5);
@@ -79,7 +108,7 @@ public class Robot extends IterativeRobot
 		else {
 			drivetrain.setPower(0, 0);
 		}
-		displayValue("Timer", timer.get());
+		SmartDashboard.putNumber("Timer", timer.get());
 	}
 
 	/**
@@ -88,6 +117,7 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void teleopInit() {
+
 	}
 
 	/**
@@ -95,19 +125,32 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void teleopPeriodic() {
-		// TODO: fix, this is short term HACK to ensure that the switch values are displayed with updates through out teleop
-		fuelSystem.getSwitchStatus();
-		
+		//publishes the stats of the various subystems
+		publishSubSystemStats();
+
+
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
-		displayValue("Gyro angle", gyro.getAngle());
+
 		
 
 	}
-	
-	// Method for displaying information on the smart dashboard
-	public static void displayValue(String name, Object value) {
-		SmartDashboard.putString(name, value.toString());
+
+	/**
+	 * Iterate the list of SubSystems and ask them to publish their stats.
+	 */
+	private void publishSubSystemStats()
+	{
+		Iterator i = subSystems.iterator();
+		while (i.hasNext())
+		{
+			SubSystem nextSubSystem = (SubSystem) i.next();
+			nextSubSystem.publishStats();
+		}
+
+		// tODO: move this from Robot to a specific subsystem
+		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
 	}
+	
 
 	// simple accessor methods
 
