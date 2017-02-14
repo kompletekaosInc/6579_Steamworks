@@ -32,10 +32,15 @@ public class DriveControl {
      */
     public void giveCommands(Robot robot)
     {
-        //This is declaring the different subsystems
+        //Uses the joystick to use an arcade drive style drive control
         arcadeDrive(robot.getDrivetrain());
-        manageClimber(robot.getClimber());
-        manageFuelFlap(robot.getFuelSystem());
+
+        //ToDo: look into parallel threads for separate button and driving controls to avoid potential lag in controls
+
+        //This checks every button and makes actions based on activated buttons
+        processStickButtons(robot);
+
+
     }
 
 
@@ -44,72 +49,78 @@ public class DriveControl {
      */
     protected void arcadeDrive(Drivetrain drivetrain)
     {
-        double stickX;
-        double stickY;
-        double leftPowerMath;
-        double rightPowerMath;
-        stickX = stick.getX();
-        stickY = stick.getY();
-        leftPowerMath = (stickY - stickX);
-        rightPowerMath = (stickY + stickX);
+        //Gets the stick values
+        double stickX = stick.getX();
+        double stickY = stick.getY();
 
-        if (stick.getRawButton(1))
-        {
-            drivetrain.setInvertedPower(leftPowerMath, rightPowerMath);
-        }
-        else
-        {
-            drivetrain.setPower(leftPowerMath, rightPowerMath);
-        }
+        //calculates the power to drive the robot ToDo: Consider capping the powers/powerband
+        double leftPowerMath = (stickY - stickX);
+        double rightPowerMath = (stickY + stickX);
+
+        //puts the calculated power back to the drive train
+        drivetrain.setPower(leftPowerMath, rightPowerMath);
+
 
     }
-
     /**
-     * This method controls the climber.
-     * Spins climber clockwise using button 7
-     * Controls power via stick throttle
-     * @param climber
+     * This method is basically a scheduler of the methods to be called by the joystick during a match
+     * @param robot
      */
-    protected void manageClimber(Climber climber)
-    {
-        double stickThrottle;
-
-        stickThrottle = ((-stick.getThrottle() + 1)/2);
-
-        if (stick.getRawButton(7))
-        {
-            climber.setPower(-stickThrottle);
+    protected void processStickButtons(Robot robot){
+        if(stick.getRawButton(1)){
+            //Free button
         }
-        else
-        {
-            climber.setPower(0);
+        else if (stick.getRawButton(2)){
+            //Free button
         }
-        SmartDashboard.putNumber("Joystick Throttle", stickThrottle);
-    }
-
-    /**
-     * This method controls the fuel flap.
-     * Raises flap at 50% power using button 3, and lowers at 50% using button 4
-     * Power is set in the climber methos as well as the limit switches
-     * @param fuelSystem
-     */
-    protected void manageFuelFlap(FuelSystem fuelSystem){
-
-        //ToDo: control the method for lowering to the offloading height once created
-
-        if (stick.getRawButton(3)){
-            fuelSystem.raiseFlap();
+        else if (stick.getRawButton(3)){
+            //Raises the fuel flap
+            robot.getFuelSystem().raiseFlap();
         }
         else if (stick.getRawButton(4)){
-            fuelSystem.offloadFuelFlap();
-
+            //Lowers fuel flap to offload state
+            robot.getFuelSystem().offloadFuelFlap();
+        }
+        else if (stick.getRawButton(5)){
+            //Free button
+        }
+        else if (stick.getRawButton(6)){
+            //Free button
         }
         else if (stick.getRawButton(7)){
-            fuelSystem.fullyLowerFlap();
-        }
+            //Lowers the flap all the way
+            robot.getFuelSystem().fullyLowerFlap();
 
+            //Spins the climber for rope collection
+            robot.getClimber().collectRope();
+        }
+        else if (stick.getRawButton(8)){
+            //Starts to climb the rope once rope is caught
+            robot.getClimber().climbRope();
+        }
+        else if (stick.getRawButton(9)){
+            //Slows down climbing for touching the davit
+            robot.getClimber().touchDavit();
+        }
+        else if (stick.getRawButton(10)){
+            //Free button
+        }
+        else if (stick.getRawButton(11)){
+            //This button is for switching the direction
+
+            if (robot.getDrivetrain().isFrontIsGear()){
+                robot.getDrivetrain().setFuelFront();
+            }
+            else{
+                robot.getDrivetrain().setGearFront();
+            }
+        }
+        else if (stick.getRawButton(12)){
+            //Free button
+        }
         else{
-            fuelSystem.stopFuelFlap();
+            robot.getClimber().stop();
+            robot.getFuelSystem().stopFuelFlap();
         }
     }
 }

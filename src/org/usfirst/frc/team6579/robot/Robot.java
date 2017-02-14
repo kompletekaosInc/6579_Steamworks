@@ -42,9 +42,9 @@ public class Robot extends IterativeRobot
 
 	private DriveControl driveControl;
 	
-    private ADXRS450_Gyro gyro = null;
 
-	private Camera camera = new Camera();
+
+	//private Camera camera = new Camera(); 14/02
 	
 	
 	/**
@@ -64,14 +64,13 @@ public class Robot extends IterativeRobot
 			subSystems.add( climber );
 			subSystems.add( fuelSystem );
 
-            gyro = new ADXRS450_Gyro();
-			SmartDashboard.putString("Gyro Installed", "yes");
-			//gyro.calibrate(); Takes a long time, will have to test if necessary
-    		gyro.reset(); // Reset the angle the gyro is pointing towards to 0
+
 
         } catch (Exception e) {
-            System.out.println("Gyro not installed correctly" + e.toString());
-			SmartDashboard.putString("Gyro Installed", "no");
+			System.out.println("Error loading sub-systems");
+			e.printStackTrace();
+
+
         }
 
 		// In future, create selector for if there is more than one drive control
@@ -147,8 +146,7 @@ public class Robot extends IterativeRobot
 			nextSubSystem.publishStats();
 		}
 
-		// tODO: move this from Robot to a specific subsystem
-		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+
 	}
 	
 
