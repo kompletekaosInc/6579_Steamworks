@@ -88,7 +88,11 @@ public class Drivetrain implements SubSystem {
 		
 	}
 
-
+    /**
+     * Follows an angle off the gyro at a driver defined speed
+     * @param power
+     * @param gyroTarget
+     */
     public void followGyro(double power, double gyroTarget)
     {
         // ToDo: fill in this method
@@ -110,6 +114,18 @@ public class Drivetrain implements SubSystem {
         rightToughbox.set(gyroMotorPowerRight);
     }
 
+    /**
+     * Gets the current gyro angle
+     */
+    public double getGyroAngle(){
+        double gyroAngle = 0;
+
+        //error handling for if there is no gyro
+        if (gyro != null){
+            gyroAngle = gyro.getAngle();
+        }
+        return gyroAngle;
+    }
 
 
     @Override

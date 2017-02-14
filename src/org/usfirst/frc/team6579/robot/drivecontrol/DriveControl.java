@@ -15,6 +15,7 @@ public class DriveControl {
 
     protected Joystick stick;
 
+    private double takenAngle; //used for the followGyro method
 
     /**
      * This initialises the DriveControl object
@@ -49,17 +50,23 @@ public class DriveControl {
      */
     protected void arcadeDrive(Drivetrain drivetrain)
     {
-        //Gets the stick values
-        double stickX = stick.getX();
-        double stickY = stick.getY();
+        if (stick.getRawButton(5)){
+            //Arcade drive is disabled as we are using followGyro
+            SmartDashboard.putBoolean("arcadeDrive",false);
+        }
+        else {
+            SmartDashboard.putBoolean("arcadeDrive", true);
+            //Gets the stick values
+            double stickX = stick.getX();
+            double stickY = stick.getY();
 
-        //calculates the power to drive the robot ToDo: Consider capping the powers/powerband
-        double leftPowerMath = (stickY - stickX);
-        double rightPowerMath = (stickY + stickX);
+            //calculates the power to drive the robot ToDo: Consider capping the powers/powerband
+            double leftPowerMath = (stickY - stickX);
+            double rightPowerMath = (stickY + stickX);
 
-        //puts the calculated power back to the drive train
-        drivetrain.setPower(leftPowerMath, rightPowerMath);
-
+            //puts the calculated power back to the drive train
+            drivetrain.setPower(leftPowerMath, rightPowerMath);
+        }
 
     }
     /**
@@ -82,7 +89,8 @@ public class DriveControl {
             robot.getFuelSystem().offloadFuelFlap();
         }
         else if (stick.getRawButton(5)){
-            //Free button
+            //Uses the followGyro method to follow a driver selected angle taken from button 12
+            robot.getDrivetrain().followGyro((stick.getY()),takenAngle);
         }
         else if (stick.getRawButton(6)){
             //Free button
@@ -116,7 +124,9 @@ public class DriveControl {
             }
         }
         else if (stick.getRawButton(12)){
-            //Free button
+            //Takes the current gyro angle
+            takenAngle = robot.getDrivetrain().getGyroAngle();
+            SmartDashboard.putNumber("takenAngle",takenAngle);
         }
         else{
             robot.getClimber().stop();
