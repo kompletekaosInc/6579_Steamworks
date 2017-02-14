@@ -54,7 +54,14 @@ public class DriveControl {
             //Arcade drive is disabled as we are using followGyro
             SmartDashboard.putBoolean("arcadeDrive",false);
         }
+        else if (stick.getRawButton(10)){
+            //turning with gyro
+            SmartDashboard.putBoolean("gyro turning",true);
+            SmartDashboard.putBoolean("arcadeDrive",false);
+        }
+
         else {
+            SmartDashboard.putBoolean("gyro turning",false);
             SmartDashboard.putBoolean("arcadeDrive", true);
             //Gets the stick values
             double stickX = stick.getX();
@@ -111,7 +118,8 @@ public class DriveControl {
             robot.getClimber().touchDavit();
         }
         else if (stick.getRawButton(10)){
-            //Free button
+            //turn 180 degrees
+            robot.getDrivetrain().gyroTurnLeft(180);
         }
         else if (stick.getRawButton(11)){
             //This button is for switching the direction
@@ -129,6 +137,7 @@ public class DriveControl {
             SmartDashboard.putNumber("takenAngle",takenAngle);
         }
         else{
+
             robot.getClimber().stop();
             robot.getFuelSystem().stopFuelFlap();
         }

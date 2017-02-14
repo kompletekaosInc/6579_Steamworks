@@ -88,6 +88,10 @@ public class Drivetrain implements SubSystem {
 		
 	}
 
+	public void stop(){
+	    setPower(0,0);
+    }
+
     /**
      * Follows an angle off the gyro at a driver defined speed
      * @param power
@@ -97,13 +101,13 @@ public class Drivetrain implements SubSystem {
     {
         // ToDo: fill in this method
         //proportionally drives in the direction of a gyro heading, turning to face the right direction
-        double currentGyroAngle = gyro.getAngle() % 360;
+        double currentGyroAngle = getGyroAngle() % 360;
         double gyroPowerAdjustment = 0;
         double gyroGain = 0.05;
 
 
         //Calculates how much to turn based on the current heading and the target heading
-        gyroPowerAdjustment = currentGyroAngle - gyroTarget;
+        gyroPowerAdjustment = currentGyroAngle - (gyroTarget % 360);
         gyroPowerAdjustment = gyroPowerAdjustment * gyroGain;
 
         double gyroMotorPowerLeft = -power - gyroPowerAdjustment;
@@ -115,9 +119,30 @@ public class Drivetrain implements SubSystem {
     }
 
     /**
+     * This method turns the robot to a degree defined by the user
+     */
+    public void gyroTurnLeft(double targetAngle){
+        double currentGyroAngle = (getGyroAngle() % 360); //ToDo: Get this to work!! start to figure out why the refresh won't work and figure out mod command ("%")
+        double angleToTurn = currentGyroAngle + targetAngle;
+
+        while ((angleToTurn - getModGyroAngle()) >= 70) {
+            setPower(-0.5, 0.5);
+        }
+        stop();
+
+        while ((angleToTurn - getModGyroAngle()) > 1) {
+            setPower(-0.25, 0.25);
+        }
+
+        stop();
+    }
+
+
+    /**
      * Gets the current gyro angle
      */
     public double getGyroAngle(){
+        publishStats();
         double gyroAngle = 0;
 
         //error handling for if there is no gyro
@@ -125,6 +150,9 @@ public class Drivetrain implements SubSystem {
             gyroAngle = gyro.getAngle();
         }
         return gyroAngle;
+    }
+    public double getModGyroAngle(){
+        return getGyroAngle() % 360;
     }
 
 
