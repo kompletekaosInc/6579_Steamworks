@@ -160,5 +160,8 @@ public class Drivetrain implements SubSystem {
     public void publishStats() {
         SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
         SmartDashboard.putBoolean("frontIsGear", frontIsGear);
+
+        SmartDashboard.putNumber("leftToughbox", leftToughbox.get());
+        SmartDashboard.putNumber("rightToughbox", rightToughbox.get());
     }
 }
