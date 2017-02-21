@@ -11,11 +11,11 @@ import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
  * The methods currently in this class are setPower, and setInvertedPower.
  */
 public class Drivetrain implements SubSystem {
-	
-	// Define driveTrain motor controllers
 
-	// the two drivetrain toughboxes
-	private Toughbox toughbox1 = new Toughbox(0,1);;
+    // Define driveTrain motor controllers
+
+    // the two drivetrain toughboxes
+    private Toughbox toughbox1 = new Toughbox(0,1);;
     private Toughbox toughbox2 = new Toughbox(2,3);;
 
     //Default the Gear is the front of robot
@@ -23,18 +23,18 @@ public class Drivetrain implements SubSystem {
     //Left drive
     private Toughbox leftToughbox = toughbox1;
 
-	//Right drive
+    //Right drive
     private Toughbox rightToughbox = toughbox2;
 
 
-	//Gyro
+    //Gyro
     private ADXRS450_Gyro gyro = null;
-	
 
-	
-	public Drivetrain() {
 
-		try {
+
+    public Drivetrain() {
+
+        try {
             gyro = new ADXRS450_Gyro();
             SmartDashboard.putBoolean("Gyro Installed", true);
 
@@ -50,27 +50,27 @@ public class Drivetrain implements SubSystem {
 
         // set the direction of the drivetrain
         setGearFront();
-	}
+    }
 
     /**
      * This method makes the front of the robot the gear side
      */
-	public void setGearFront(){
-	    leftToughbox = toughbox1;
-	    rightToughbox = toughbox2;
+    public void setGearFront() {
+        leftToughbox = toughbox1;
+        rightToughbox = toughbox2;
 
-	    frontIsGear = true;
+        frontIsGear = true;
     }
 
     public boolean isFrontIsGear() {
         return frontIsGear;
     }
 
-    public void setFuelFront(){
-	    leftToughbox = toughbox2;
-	    rightToughbox = toughbox1;
+    public void setFuelFront() {
+        leftToughbox = toughbox2;
+        rightToughbox = toughbox1;
 
-	    frontIsGear = false;
+        frontIsGear = false;
 
     }
 
@@ -79,17 +79,17 @@ public class Drivetrain implements SubSystem {
      * @param leftPower
      * @param rightPower
      */
-	public void setPower(double leftPower, double rightPower)
-	{
-	    //sets the left motor controllers
-		leftToughbox.set(-leftPower);
-		//sets the right motor controllers
-		rightToughbox.set(rightPower);
-		
-	}
+    public void setPower(double leftPower, double rightPower)
+    {
+        //sets the left motor controllers
+        leftToughbox.set(-leftPower);
+        //sets the right motor controllers
+        rightToughbox.set(rightPower);
 
-	public void stop(){
-	    setPower(0,0);
+    }
+
+    public void stop() {
+        setPower(0,0);
     }
 
     /**
@@ -121,7 +121,7 @@ public class Drivetrain implements SubSystem {
     /**
      * This method turns the robot to a degree defined by the user
      */
-    public void gyroTurnLeft(double targetAngle){
+    public void gyroTurnLeft(double targetAngle) {
         double currentGyroAngle = (getGyroAngle() % 360); //ToDo: Get this to work!! start to figure out why the refresh won't work and figure out mod command ("%")
         double angleToTurn = currentGyroAngle + targetAngle;
 
@@ -141,17 +141,17 @@ public class Drivetrain implements SubSystem {
     /**
      * Gets the current gyro angle
      */
-    public double getGyroAngle(){
+    public double getGyroAngle() {
         publishStats();
         double gyroAngle = 0;
 
         //error handling for if there is no gyro
-        if (gyro != null){
+        if (gyro != null) {
             gyroAngle = gyro.getAngle();
         }
         return gyroAngle;
     }
-    public double getModGyroAngle(){
+    public double getModGyroAngle() {
         return getGyroAngle() % 360;
     }
 
