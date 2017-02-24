@@ -50,11 +50,11 @@ public class DriveControl {
      */
     protected void arcadeDrive(Drivetrain drivetrain)
     {
-        if (stick.getRawButton(5)){
+        if (stick.getRawButton(5)) {
             //Arcade drive is disabled as we are using followGyro
             SmartDashboard.putBoolean("arcadeDrive",false);
         }
-        else if (stick.getRawButton(10)){
+        else if (stick.getRawButton(10)) {
             //turning with gyro
             SmartDashboard.putBoolean("gyro turning",true);
             SmartDashboard.putBoolean("arcadeDrive",false);
@@ -80,63 +80,63 @@ public class DriveControl {
      * This method is basically a scheduler of the methods to be called by the joystick during a match
      * @param robot
      */
-    protected void processStickButtons(Robot robot){
-        if(stick.getRawButton(1)){
+    protected void processStickButtons(Robot robot) {
+        if(stick.getRawButton(1)) {
             //Free button
         }
-        else if (stick.getRawButton(2)){
+        else if (stick.getRawButton(2)) {
             //Free button
         }
-        else if (stick.getRawButton(3)){
+        else if (stick.getRawButton(3)) {
             //Raises the fuel flap
             robot.getFuelSystem().raiseFlap();
         }
-        else if (stick.getRawButton(4)){
+        else if (stick.getRawButton(4)) {
             //Lowers fuel flap to offload state
             robot.getFuelSystem().offloadFuelFlap();
         }
-        else if (stick.getRawButton(5)){
+        else if (stick.getRawButton(5)) {
             //Uses the followGyro method to follow a driver selected angle taken from button 12
             robot.getDrivetrain().followGyro((stick.getY()),takenAngle);
         }
-        else if (stick.getRawButton(6)){
+        else if (stick.getRawButton(6)) {
             //Free button
         }
-        else if (stick.getRawButton(7)){
+        else if (stick.getRawButton(7)) {
             //Lowers the flap all the way
             robot.getFuelSystem().fullyLowerFlap();
 
             //Spins the climber for rope collection
             //robot.getClimber().collectRope();
         }
-        else if (stick.getRawButton(8)){
+        else if (stick.getRawButton(8)) {
             //Starts to climb the rope once rope is caught
             robot.getClimber().climbRope();
         }
-        else if (stick.getRawButton(9)){
+        else if (stick.getRawButton(9)) {
             //Slows down climbing for touching the davit
             robot.getClimber().touchDavit();
         }
-        else if (stick.getRawButton(10)){
+        else if (stick.getRawButton(10)) {
             //turn 180 degrees
             robot.getDrivetrain().gyroTurnLeft(180);
         }
-        else if (stick.getRawButton(11)){
+        else if (stick.getRawButton(11)) {
             //This button is for switching the direction
 
-            if (robot.getDrivetrain().isFrontIsGear()){
+            if (robot.getDrivetrain().isFrontIsGear()) {
                 robot.getDrivetrain().setFuelFront();
             }
-            else{
+            else {
                 robot.getDrivetrain().setGearFront();
             }
         }
-        else if (stick.getRawButton(12)){
+        else if (stick.getRawButton(12)) {
             //Takes the current gyro angle
             takenAngle = robot.getDrivetrain().getGyroAngle();
             SmartDashboard.putNumber("takenAngle",takenAngle);
         }
-        else{
+        else {
 
             robot.getClimber().stop();
             robot.getFuelSystem().stopFuelFlap();
