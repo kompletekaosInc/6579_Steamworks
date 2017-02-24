@@ -24,7 +24,7 @@ public class Climber implements SubSystem{
 	 */
 	private void setPower(double power)
 	{
-		climberToughbox.set(power);
+		climberToughbox.set(-power);
 
 	}
 
@@ -46,7 +46,7 @@ public class Climber implements SubSystem{
 	 * This method slowly reaches the top as to not destroy the davit
 	 */
 	public void touchDavit(){
-		setPower(0.2);
+		setPower(0.6);
 	}
 
 	/**

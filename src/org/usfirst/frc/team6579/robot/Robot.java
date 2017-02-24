@@ -101,12 +101,12 @@ public class Robot extends IterativeRobot
 		publishSubSystemStats();
 
 		// Example code for driving for 2 seconds
-		if (timer.get() < 2.0) {
-			drivetrain.setPower(0.5, 0.5);
-		} 
-		else {
-			drivetrain.setPower(0, 0);
-		}
+//		if (timer.get() < 2.0) {
+//			drivetrain.setPower(0.5, 0.5);
+//		}
+//		else {
+//			drivetrain.setPower(0, 0);
+//		}
 		SmartDashboard.putNumber("Timer", timer.get());
 	}
 

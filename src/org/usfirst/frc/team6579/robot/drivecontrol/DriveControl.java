@@ -107,7 +107,7 @@ public class DriveControl {
             robot.getFuelSystem().fullyLowerFlap();
 
             //Spins the climber for rope collection
-            robot.getClimber().collectRope();
+            //robot.getClimber().collectRope();
         }
         else if (stick.getRawButton(8)){
             //Starts to climb the rope once rope is caught
