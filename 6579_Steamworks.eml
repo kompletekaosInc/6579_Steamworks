@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component inherit-compiler-output="true">
-	<output-test url="file://$MODULE_DIR$/classes/test/6579_Steamworks"/>
+<component inheritJdk="true">
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="wpilib" scope="COMPILE">
+		<srcroot url="jar://$wpilib.sources$!/"/>
+	</lib>
+	<lib name="networktables" scope="COMPILE">
+		<srcroot url="jar://$networktables.sources$!/"/>
+	</lib>
+	<lib name="opencv" scope="COMPILE">
+		<srcroot url="file://$opencv.sources$"/>
+	</lib>
+	<levels>
+		<level name="cscore" value="project"/>
+	</levels>
 </component>

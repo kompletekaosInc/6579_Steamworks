@@ -24,7 +24,7 @@ public class Toughbox {
      * This sets the toughbox motors to the same power
      * @param power
      */
-    public void set(double power) {
+    public void set(double power){
         motorA.set(power);
         motorB.set(power);
     }
@@ -34,7 +34,7 @@ public class Toughbox {
      * motorA is always going to equal motorB, so only calling one is fine
      * @return
      */
-    public double get() {
+    public double get(){
 
         return motorA.get();
     }
