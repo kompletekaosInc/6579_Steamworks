@@ -1,14 +1,16 @@
 package org.usfirst.frc.team6579.robot;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
+import org.usfirst.frc.team6579.robot.drivecontrol.JoystickDriveControl;
+import org.usfirst.frc.team6579.robot.drivecontrol.SteamworksJoystickDriveControl;
 import org.usfirst.frc.team6579.robot.subsystem.Climber;
 import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team6579.robot.subsystem.FuelSystem;
 import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,7 +76,7 @@ public class Robot extends IterativeRobot
         }
 
 		// In future, create selector for if there is more than one drive control
-		driveControl = new DriveControl();
+		driveControl = new SteamworksJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
 
 
 		// publish stats to the smart dashboard for all known subsystems

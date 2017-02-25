@@ -74,7 +74,7 @@ public class FuelSystem implements SubSystem {
 	 */
 	public void raiseFlap(){
 	    //this moves the flap up
-		//ToDo: Check motor rotation is correct and limit switches are correct
+
 		getSwitchStatus();
 
 
@@ -95,7 +95,7 @@ public class FuelSystem implements SubSystem {
 	 */
 	public void fullyLowerFlap(){
 		//this moves the flap down
-		//ToDo: Check motor rotation is correct and limit switches are correct
+
 		getSwitchStatus();
 		
 		if (lowerLimitReached){
@@ -107,8 +107,6 @@ public class FuelSystem implements SubSystem {
 
 		}
 	}
-
-	//ToDo: Create the third method which goes down to offloading height
 
     /**
      * This lowers the fuel flap down to the offload position
