@@ -2,15 +2,25 @@ package org.usfirst.frc.team6579.robot.autonomous;
 
 
 import edu.wpi.first.wpilibj.Timer;
+import org.usfirst.frc.team6579.robot.Robot;
+
 
 /**
  * Created by Jiah on 26/2/17.
  */
 public abstract class AutoStrategy {
 
-    private Timer timer = new Timer();
+    protected Timer timer = new Timer();
 
-    public abstract void run();
+    /**
+     * This class is the actual autonomous code running
+     * @param robot
+     */
+    public abstract void run(Robot robot);
+
+    /**
+     * This code is basically auto.init for the timer and auto strategy side of the world.
+     */
     public void start(){
         timer.reset();
         timer.start();
