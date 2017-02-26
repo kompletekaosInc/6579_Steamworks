@@ -2,7 +2,11 @@ package org.usfirst.frc.team6579.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team6579.robot.autonomous.AutoStrategy;
+import org.usfirst.frc.team6579.robot.autonomous.TestStrategy;
+import org.usfirst.frc.team6579.robot.autonomous.TestStrategy2;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 import org.usfirst.frc.team6579.robot.drivecontrol.JoystickDriveControl;
 import org.usfirst.frc.team6579.robot.drivecontrol.SteamworksJoystickDriveControl;
@@ -39,14 +43,16 @@ public class Robot extends IterativeRobot
 
 	
 	// attributes
-	
-	private Timer timer = new Timer();
+
 
 	private DriveControl driveControl;
-	
 
 
 	//private Camera camera = new Camera(); 14/02
+
+    //Autonomous strategy selector
+    private AutoStrategy autoStrategy;
+    private SendableChooser autoChooser;
 	
 	
 	/**
@@ -78,19 +84,35 @@ public class Robot extends IterativeRobot
 		// In future, create selector for if there is more than one drive control
 		driveControl = new SteamworksJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
 
+        //Auto selector
+        populateAutoSelector();
 
-		// publish stats to the smart dashboard for all known subsystems
+
+        // publish stats to the smart dashboard for all known subsystems
 		publishSubSystemStats();  // TODO: in future create a new thread / period to constantly call this from this point onwards
 	}
 
-	/**
+    /**
+     * This is the autonomous strategy selector. Add all new strategies here.
+     */
+    private void populateAutoSelector() {
+        //populating chooser and sending to smart dashboard
+        autoChooser = new SendableChooser();
+        //picks the default autonomous strategy
+        autoChooser.addDefault("Default autonomous strategy", new TestStrategy());
+        //adds the other strategies in the list
+        autoChooser.addObject("Second autonomous choice", new TestStrategy2());
+        //puts selector data to smart dashboard
+        SmartDashboard.putData("Autonomous code selector", autoChooser);
+    }
+
+    /**
 	 * This function is run once each time the robot enters autonomous mode
 	 */
 	@Override
 	public void autonomousInit() {
-		// Example code to start timer for counting drive forward time 
-		timer.reset(); 
-		timer.start();
+        autoStrategy = (AutoStrategy) autoChooser.getSelected();
+        autoStrategy.start();
 	}
 
 	/**
@@ -102,14 +124,8 @@ public class Robot extends IterativeRobot
 		//Publishes the subsystem status'
 		publishSubSystemStats();
 
-		// Example code for driving for 2 seconds
-//		if (timer.get() < 2.0) {
-//			drivetrain.setPower(0.5, 0.5);
-//		}
-//		else {
-//			drivetrain.setPower(0, 0);
-//		}
-		SmartDashboard.putNumber("Timer", timer.get());
+        autoStrategy.run();
+
 	}
 
 	/**
