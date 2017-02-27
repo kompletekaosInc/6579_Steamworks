@@ -98,6 +98,33 @@ public class Drivetrain implements SubSystem {
     }
 
     /**
+     * This method makes the robot stop on the spot.
+     */
+    public void hardStop(){
+        double leftStopPower = 0.1;
+        double rightStopPower = 0.1;
+
+        if (leftToughbox.get()>0){
+	        leftStopPower = -0.1;
+
+        }
+        else{
+            leftStopPower = 0.1;
+        }
+
+        if (rightToughbox.get() > 0){
+            rightStopPower = -0.1;
+        }
+        else{
+            rightStopPower = 0.1;
+        }
+        SmartDashboard.putNumber("leftStopPower",leftStopPower);
+        SmartDashboard.putNumber("rightStopPower",rightStopPower);
+	    setPower(leftStopPower,rightStopPower);
+
+    }
+
+    /**
      * Follows an angle off the gyro at a driver defined speed
      * @param power
      * @param gyroTarget
@@ -165,6 +192,13 @@ public class Drivetrain implements SubSystem {
         return getGyroAngle() % 360;
     }
 
+    /**
+     * Allows the gyro value to be set to 0
+     */
+    public void resetGyro(){
+        gyro.reset();//resets gyro value to 0
+    }
+
 
     /**
      * Method required by SubSystem for this class to publish important statistics
@@ -176,5 +210,6 @@ public class Drivetrain implements SubSystem {
 
         SmartDashboard.putNumber("leftToughbox", leftToughbox.get());
         SmartDashboard.putNumber("rightToughbox", rightToughbox.get());
+
     }
 }

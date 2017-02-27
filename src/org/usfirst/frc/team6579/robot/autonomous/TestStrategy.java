@@ -15,12 +15,22 @@ public class TestStrategy extends AutoStrategy {
      * @param robot
      */
     public void run(Robot robot) {
-        SmartDashboard.putString("Auton selection", this.toString());
+        SmartDashboard.putString("Auton selection", this.getClass().toString());
 
         if (timer.get() < 2){
-            robot.getDrivetrain().setPower(0.2,0.2);
+            //robot.getDrivetrain().setPower(-0.4,-0.4);
+
+            robot.getDrivetrain().resetGyro();
+            double followAngle = robot.getDrivetrain().getModGyroAngle();
+
+            robot.getDrivetrain().followGyro(0.4,followAngle);
+
+
         }
-        else if (timer.get() <=3 ){
+        else if (timer.get() <=2.5){
+            robot.getDrivetrain().hardStop();
+        }
+        else if (timer.get() <=2.7 ){
             robot.getDrivetrain().stop();
         }
 
