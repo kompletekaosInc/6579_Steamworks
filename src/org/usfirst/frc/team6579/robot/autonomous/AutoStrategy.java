@@ -6,6 +6,7 @@ import org.usfirst.frc.team6579.robot.Robot;
 
 
 /**
+ * An abstract class defining what an autonomous strategy should look like
  * Created by Jiah on 26/2/17.
  */
 public abstract class AutoStrategy {

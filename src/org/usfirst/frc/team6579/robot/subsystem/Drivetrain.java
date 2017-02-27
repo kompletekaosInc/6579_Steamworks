@@ -8,7 +8,7 @@ import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
 /**
  * This class is the drive train class. all attributes and objects of the drivetrain belong here.
  * This class owns PWM ports 0,1 (left hand side of the robot) ,2 and 3 (right hand side of the robot). All four of these motor controllers are VictorSP speed controllers.
- * The methods currently in this class are setPower, and setInvertedPower.
+ *
  */
 public class Drivetrain implements SubSystem {
 	
@@ -29,9 +29,11 @@ public class Drivetrain implements SubSystem {
 
 	//Gyro
     private ADXRS450_Gyro gyro = null;
-	
 
-	
+
+    /**
+     * Declaration of class, tries for gyro and sets the gear side as the default front of robot
+     */
 	public Drivetrain() {
 
 		try {
@@ -66,6 +68,9 @@ public class Drivetrain implements SubSystem {
         return frontIsGear;
     }
 
+    /**
+     * This method makes the fuel flap and climber side of the robot the front
+     */
     public void setFuelFront(){
 	    leftToughbox = toughbox2;
 	    rightToughbox = toughbox1;
@@ -151,11 +156,19 @@ public class Drivetrain implements SubSystem {
         }
         return gyroAngle;
     }
+
+    /**
+     * Gets the moderated gyro angle (makes values between -360 and 360)
+     * @return
+     */
     public double getModGyroAngle(){
         return getGyroAngle() % 360;
     }
 
 
+    /**
+     * Method required by SubSystem for this class to publish important statistics
+     */
     @Override
     public void publishStats() {
         SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());

@@ -5,10 +5,15 @@ import org.usfirst.frc.team6579.robot.Robot;
 
 
 /**
+ * A test autonomous strategy, used as default in the autonomous selector.
  * Created by Jiah on 26/2/17.
  */
 public class TestStrategy extends AutoStrategy {
 
+    /**
+     * Logic for running autonomous
+     * @param robot
+     */
     public void run(Robot robot) {
         SmartDashboard.putString("Auton selection", this.toString());
 

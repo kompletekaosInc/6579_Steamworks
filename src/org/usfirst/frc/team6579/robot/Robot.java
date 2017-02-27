@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot
 		//Publishes the subsystem status'
 		publishSubSystemStats();
 
-        autoStrategy.run();
+        autoStrategy.run(this);
 
 	}
 
