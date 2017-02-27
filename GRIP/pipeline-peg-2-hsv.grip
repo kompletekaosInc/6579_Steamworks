@@ -3,6 +3,9 @@
     <grip:Camera>
       <property name="deviceNumber" value="0"/>
     </grip:Camera>
+    <grip:Camera>
+      <property name="address" value="http://roborio-6579-frc.local:1181/?action=stream"/>
+    </grip:Camera>
   </sources>
   <steps>
     <grip:Step name="CV resize">
@@ -19,24 +22,24 @@
       </grip:Input>
       <grip:Output step="0" socket="0" previewed="true"/>
     </grip:Step>
-    <grip:Step name="HSV Threshold">
+    <grip:Step name="HSL Threshold">
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>
-          <double>37.230215827338135</double>
-          <double>74.02730375426621</double>
+          <double>63.12949640287769</double>
+          <double>97.48726655348048</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="2">
         <value>
-          <double>0.0</double>
-          <double>33.07167235494883</double>
+          <double>165.10791366906474</double>
+          <double>255.0</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>217.85071942446044</double>
-          <double>255.0</double>
+          <double>38.98381294964029</double>
+          <double>161.91850594227503</double>
         </value>
       </grip:Input>
       <grip:Output step="1" socket="0" previewed="true"/>
@@ -54,19 +57,19 @@
         <value>150.0</value>
       </grip:Input>
       <grip:Input step="3" socket="2">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="3">
         <value>10.0</value>
       </grip:Input>
       <grip:Input step="3" socket="4">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="5">
         <value>10.0</value>
       </grip:Input>
       <grip:Input step="3" socket="6">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="7">
         <value>
@@ -75,36 +78,36 @@
         </value>
       </grip:Input>
       <grip:Input step="3" socket="8">
-        <value>1000000</value>
+        <value>1000000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="9">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="10">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="11">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Output step="3" socket="0" previewed="true"/>
     </grip:Step>
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="true"/>
-      <grip:Input step="2" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
       <grip:Output step="0" socket="0" previewed="true"/>
       <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="false"/>
+      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="1" socket="0" previewed="true"/>
       <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
-      <grip:Input step="3" socket="0"/>
+      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
@@ -119,9 +122,9 @@
   <codeGenerationSettings>
     <language>Java</language>
     <className>GripPipeline</className>
-    <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>C:\Users\m026295\GRIP</saveDir>
-    <packageName></packageName>
+    <implementWpilibPipeline>true</implementWpilibPipeline>
+    <saveDir>/Users/Jiah/Github/6579_Steamworks/src/org/usfirst/frc/team6579/robot/vision</saveDir>
+    <packageName>org.usfirst.frc.team6579.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>

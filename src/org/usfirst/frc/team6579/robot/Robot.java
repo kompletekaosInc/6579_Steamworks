@@ -20,6 +20,7 @@ import org.usfirst.frc.team6579.robot.subsystem.Climber;
 import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team6579.robot.subsystem.FuelSystem;
 import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
+import org.usfirst.frc.team6579.robot.vision.TrackingPeg;
 
 
 import java.util.ArrayList;
@@ -44,12 +45,13 @@ public class Robot extends IterativeRobot
 	private FuelSystem fuelSystem = null;
 
 
+
 	// manage a collection of all the subsystems for the robot
 	private List subSystems = new ArrayList();
 
 	
 	// attributes
-
+    //private UsbCamera camera = null;
 
 	private DriveControl driveControl;
 
@@ -59,7 +61,9 @@ public class Robot extends IterativeRobot
     //Autonomous strategy selector
     private AutoStrategy autoStrategy;
     private SendableChooser autoChooser;
-	
+
+    //Tracking
+    private TrackingPeg trackingPeg;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -68,32 +72,6 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() {
 
-//
-//        try {
-//            new Thread(() -> {
-                UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-                camera.setResolution(320,240);
-                camera.setBrightness(0);
-                camera.setExposureManual(0);
-                camera.setWhiteBalanceManual(0);
-                //camera.setWhiteBalanceAuto();
-//
-//                CvSink cvSink = CameraServer.getInstance().getVideo();
-//                CvSource outputStream = CameraServer.getInstance().putVideo("Blur",320,240);
-//
-//                Mat source = new Mat();
-//                Mat output = new Mat();
-//
-//                while (!Thread.interrupted()){
-//                    cvSink.grabFrame(source);
-//                    //Imgproc.cvtColor(source,output,Imgproc.COLOR_BGR2GRAY);
-//                    outputStream.putFrame(output);
-//                }
-//            }).start();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Camera catch");
-//        }
 
 
         try {
@@ -114,6 +92,8 @@ public class Robot extends IterativeRobot
 
 
         }
+
+        trackingPeg = new TrackingPeg();
 
 		// In future, create selector for if there is more than one drive control
 		driveControl = new SteamworksJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
@@ -178,7 +158,7 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic() {
 		//publishes the stats of the various subystems
 		publishSubSystemStats();
-
+        trackingPeg.findX();
 
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 
