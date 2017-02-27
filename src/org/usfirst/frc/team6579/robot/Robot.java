@@ -1,9 +1,15 @@
 package org.usfirst.frc.team6579.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6579.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy2;
@@ -48,7 +54,7 @@ public class Robot extends IterativeRobot
 	private DriveControl driveControl;
 
 
-	//private Camera camera = new Camera(); 14/02
+	//private Camera camera = null;// 14/02
 
     //Autonomous strategy selector
     private AutoStrategy autoStrategy;
@@ -62,7 +68,35 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() {
 
-		try {
+//
+//        try {
+//            new Thread(() -> {
+                UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+                camera.setResolution(320,240);
+                camera.setBrightness(0);
+                camera.setExposureManual(0);
+                camera.setWhiteBalanceManual(0);
+                //camera.setWhiteBalanceAuto();
+//
+//                CvSink cvSink = CameraServer.getInstance().getVideo();
+//                CvSource outputStream = CameraServer.getInstance().putVideo("Blur",320,240);
+//
+//                Mat source = new Mat();
+//                Mat output = new Mat();
+//
+//                while (!Thread.interrupted()){
+//                    cvSink.grabFrame(source);
+//                    //Imgproc.cvtColor(source,output,Imgproc.COLOR_BGR2GRAY);
+//                    outputStream.putFrame(output);
+//                }
+//            }).start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("Camera catch");
+//        }
+
+
+        try {
 			// manage the collection of SubSystems
 			drivetrain = new Drivetrain();
 			climber = new Climber();
@@ -124,7 +158,7 @@ public class Robot extends IterativeRobot
 		//Publishes the subsystem status'
 		publishSubSystemStats();
 
-        autoStrategy.run();
+        autoStrategy.run(this);
 
 	}
 

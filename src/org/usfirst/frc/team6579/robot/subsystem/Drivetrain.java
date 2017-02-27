@@ -8,7 +8,7 @@ import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
 /**
  * This class is the drive train class. all attributes and objects of the drivetrain belong here.
  * This class owns PWM ports 0,1 (left hand side of the robot) ,2 and 3 (right hand side of the robot). All four of these motor controllers are VictorSP speed controllers.
- * The methods currently in this class are setPower, and setInvertedPower.
+ *
  */
 public class Drivetrain implements SubSystem {
 	
@@ -29,9 +29,11 @@ public class Drivetrain implements SubSystem {
 
 	//Gyro
     private ADXRS450_Gyro gyro = null;
-	
 
-	
+
+    /**
+     * Declaration of class, tries for gyro and sets the gear side as the default front of robot
+     */
 	public Drivetrain() {
 
 		try {
@@ -66,6 +68,9 @@ public class Drivetrain implements SubSystem {
         return frontIsGear;
     }
 
+    /**
+     * This method makes the fuel flap and climber side of the robot the front
+     */
     public void setFuelFront(){
 	    leftToughbox = toughbox2;
 	    rightToughbox = toughbox1;
@@ -90,6 +95,33 @@ public class Drivetrain implements SubSystem {
 
 	public void stop(){
 	    setPower(0,0);
+    }
+
+    /**
+     * This method makes the robot stop on the spot.
+     */
+    public void hardStop(){
+        double leftStopPower = 0.1;
+        double rightStopPower = 0.1;
+
+        if (leftToughbox.get()>0){
+	        leftStopPower = -0.1;
+
+        }
+        else{
+            leftStopPower = 0.1;
+        }
+
+        if (rightToughbox.get() > 0){
+            rightStopPower = -0.1;
+        }
+        else{
+            rightStopPower = 0.1;
+        }
+        SmartDashboard.putNumber("leftStopPower",leftStopPower);
+        SmartDashboard.putNumber("rightStopPower",rightStopPower);
+	    setPower(leftStopPower,rightStopPower);
+
     }
 
     /**
@@ -151,11 +183,26 @@ public class Drivetrain implements SubSystem {
         }
         return gyroAngle;
     }
+
+    /**
+     * Gets the moderated gyro angle (makes values between -360 and 360)
+     * @return
+     */
     public double getModGyroAngle(){
         return getGyroAngle() % 360;
     }
 
+    /**
+     * Allows the gyro value to be set to 0
+     */
+    public void resetGyro(){
+        gyro.reset();//resets gyro value to 0
+    }
 
+
+    /**
+     * Method required by SubSystem for this class to publish important statistics
+     */
     @Override
     public void publishStats() {
         SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
@@ -163,5 +210,6 @@ public class Drivetrain implements SubSystem {
 
         SmartDashboard.putNumber("leftToughbox", leftToughbox.get());
         SmartDashboard.putNumber("rightToughbox", rightToughbox.get());
+
     }
 }
