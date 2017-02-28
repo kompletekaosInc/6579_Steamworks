@@ -1,27 +1,18 @@
 package org.usfirst.frc.team6579.robot;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6579.robot.autonomous.AutoStrategy;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy2;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
-import org.usfirst.frc.team6579.robot.drivecontrol.JoystickDriveControl;
 import org.usfirst.frc.team6579.robot.drivecontrol.SteamworksJoystickDriveControl;
 import org.usfirst.frc.team6579.robot.subsystem.Climber;
 import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team6579.robot.subsystem.FuelSystem;
 import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
-import org.usfirst.frc.team6579.robot.vision.TrackingPeg;
+import org.usfirst.frc.team6579.robot.subsystem.vision.RobotVision;
 
 
 import java.util.ArrayList;
@@ -44,6 +35,8 @@ public class Robot extends IterativeRobot
 	private Drivetrain drivetrain = null;
 	private Climber climber = null;
 	private FuelSystem fuelSystem = null;
+	//Tracking
+	private RobotVision vision;
 
 
 
@@ -63,8 +56,7 @@ public class Robot extends IterativeRobot
     private AutoStrategy autoStrategy;
     private SendableChooser autoChooser;
 
-    //Tracking
-    private TrackingPeg trackingPeg;
+
 
 	
 	/**
@@ -81,10 +73,12 @@ public class Robot extends IterativeRobot
 			drivetrain = new Drivetrain();
 			climber = new Climber();
 			fuelSystem = new FuelSystem();
+            vision = new RobotVision();
 
 			subSystems.add( drivetrain );
 			subSystems.add( climber );
 			subSystems.add( fuelSystem );
+			subSystems.add( vision );
 
 
 
@@ -95,7 +89,7 @@ public class Robot extends IterativeRobot
 
 		}
 
-        trackingPeg = new TrackingPeg();
+
 
 		// In future, create selector for if there is more than one drive control
 		driveControl = new SteamworksJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
@@ -160,7 +154,7 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic() {
 		//publishes the stats of the various subystems
 		publishSubSystemStats();
-        trackingPeg.findX();
+        vision.findX();
 
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 

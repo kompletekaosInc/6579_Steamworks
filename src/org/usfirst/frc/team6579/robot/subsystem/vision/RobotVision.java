@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6579.robot.vision;
+package org.usfirst.frc.team6579.robot.subsystem.vision;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
@@ -8,11 +8,12 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
 
 /**
  * Created by Jiah on 27/2/17.
  */
-public class TrackingPeg {
+public class RobotVision implements SubSystem {
 
 
     private VisionThread visionThread;
@@ -30,19 +31,23 @@ public class TrackingPeg {
     /**
      * This class tracks the peg using vision tracking
      */
-    public TrackingPeg() {
+    public RobotVision() {
 
         try {
+            //tries for camera
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(320, 240);
             camera.setBrightness(0);
             camera.setExposureManual(0);
             camera.setWhiteBalanceManual(0);
+
+            //try for pipeline
+            pipeline = new GripPipeline();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        pipeline = new GripPipeline();
 
     }
 
@@ -78,7 +83,13 @@ public class TrackingPeg {
             }
 
         }
-        SmartDashboard.putNumber("CentreX",centreX);
+
         return centreX;
+    }
+
+    @Override
+    public void publishStats() {
+        SmartDashboard.putNumber("CentreX",centreX);
+
     }
 }

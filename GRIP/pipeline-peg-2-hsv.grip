@@ -124,7 +124,7 @@
     <className>GripPipeline</className>
     <implementWpilibPipeline>true</implementWpilibPipeline>
     <saveDir>/Users/Jiah/Github/6579_Steamworks/src/org/usfirst/frc/team6579/robot/vision</saveDir>
-    <packageName>org.usfirst.frc.team6579.robot.vision</packageName>
+    <packageName>org.usfirst.frc.team6579.robot.subsystem.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>
