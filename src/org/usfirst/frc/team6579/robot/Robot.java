@@ -3,6 +3,7 @@ package org.usfirst.frc.team6579.robot;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -64,6 +65,8 @@ public class Robot extends IterativeRobot
 
     //Tracking
     private TrackingPeg trackingPeg;
+
+    private AnalogInput ultrasonicAnalog;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -91,7 +94,9 @@ public class Robot extends IterativeRobot
 			e.printStackTrace();
 
 
-        }
+		}
+
+		AnalogInput ultrasonicAnalog = new AnalogInput(0);
 
         trackingPeg = new TrackingPeg();
 
@@ -178,6 +183,8 @@ public class Robot extends IterativeRobot
 			nextSubSystem.publishStats();
 		}
 
+		double volts = ultrasonicAnalog.getVoltage();
+		SmartDashboard.putNumber("Ultrasonic (Volts)",volts);
 
 	}
 	
