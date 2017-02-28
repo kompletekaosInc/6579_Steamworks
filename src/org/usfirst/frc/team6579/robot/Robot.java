@@ -154,7 +154,8 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic() {
 		//publishes the stats of the various subystems
 		publishSubSystemStats();
-        vision.findX();
+
+        vision.processImageInPipeline();
 
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 
@@ -190,5 +191,9 @@ public class Robot extends IterativeRobot
 
     public FuelSystem getFuelSystem() {
         return fuelSystem;
+    }
+
+    public RobotVision getVision() {
+        return vision;
     }
 }

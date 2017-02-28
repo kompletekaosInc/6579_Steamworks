@@ -1,12 +1,22 @@
 package org.usfirst.frc.team6579.robot.subsystem.vision;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 import org.opencv.core.*;
+import org.opencv.core.Core.*;
+import org.opencv.features2d.FeatureDetector;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
+import org.opencv.objdetect.*;
 
 /**
 * GripPipeline class.
@@ -53,11 +63,11 @@ public class GripPipeline implements VisionPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 150.0;
+		double filterContoursMinArea = 15.0;
 		double filterContoursMinPerimeter = 0.0;
-		double filterContoursMinWidth = 10.0;
+		double filterContoursMinWidth = 0.0;
 		double filterContoursMaxWidth = 1000.0;
-		double filterContoursMinHeight = 10.0;
+		double filterContoursMinHeight = 0.0;
 		double filterContoursMaxHeight = 1000.0;
 		double[] filterContoursSolidity = {0, 100};
 		double filterContoursMaxVertices = 1000000.0;
