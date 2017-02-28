@@ -66,7 +66,6 @@ public class Robot extends IterativeRobot
     //Tracking
     private TrackingPeg trackingPeg;
 
-    private AnalogInput ultrasonicAnalog;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -95,8 +94,6 @@ public class Robot extends IterativeRobot
 
 
 		}
-
-		AnalogInput ultrasonicAnalog = new AnalogInput(0);
 
         trackingPeg = new TrackingPeg();
 
@@ -183,8 +180,6 @@ public class Robot extends IterativeRobot
 			nextSubSystem.publishStats();
 		}
 
-		double volts = ultrasonicAnalog.getVoltage();
-		SmartDashboard.putNumber("Ultrasonic (Volts)",volts);
 
 	}
 	
