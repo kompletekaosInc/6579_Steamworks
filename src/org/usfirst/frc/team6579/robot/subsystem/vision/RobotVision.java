@@ -25,9 +25,10 @@ public class RobotVision extends Thread implements SubSystem {
 
     private final Object imgLock = new Object();  // to lock access to te centreX variable
 
-    private UsbCamera camera = null;
+    private UsbCamera camera = null;  // it will remain null if we have no camera plugged into the USB ports
+    private Mat sourceMap = new Mat();;  // Maps are expensive, so we will re-use this
 
-    private GripPipeline gripPipeline;
+    private GripPipeline gripPipeline = new GripPipeline();
 
     // to see the GRIP gripPipeline using the USB camera from GRIP use an IP camera source with:  http://roborio-3452-frc.local:1181/?action=stream
 
@@ -38,22 +39,22 @@ public class RobotVision extends Thread implements SubSystem {
     public RobotVision() {
 
         try {
-            //tries for camera
-            configureVisionCameraSettingsForTracking();
+            //get a reference to the camera to use for vision
+            camera = CameraServer.getInstance().startAutomaticCapture();
 
-            //try for gripPipeline
-            gripPipeline = new GripPipeline();
+            // by default, configure the camera for capturing dark images for vision tracking
+            configureVisionCameraSettingsForTracking();
 
         } catch (Exception e) {
             System.out.println("Exception constructing RobotVision");
             e.printStackTrace();
+            camera = null;  // we need to test the camera is NOT null before trying to use it
         }
-
 
     }
 
     private void configureVisionCameraSettingsForTracking() {
-        camera = CameraServer.getInstance().startAutomaticCapture();
+
         camera.setResolution(320, 240);
         camera.setBrightness(0);
         camera.setExposureManual(0);
@@ -65,14 +66,19 @@ public class RobotVision extends Thread implements SubSystem {
      */
     public void processImageInPipeline()
     {
+        // if we have no camera we can't process images
+        if (camera == null)
+            return;
+
         if (performVisionTracking) {
+
             // get camera image
-            Mat source = new Mat();
+            sourceMap.empty();  // we re-use the same Map to process the source image
             CvSink cvSink = CameraServer.getInstance().getVideo();
-            cvSink.grabFrame(source);
+            cvSink.grabFrame(sourceMap);
 
             // create an instance of the GRIP gripPipeline
-            gripPipeline.process(source);
+            gripPipeline.process(sourceMap);
 
             System.out.println("Inside thread [contours:" + gripPipeline.filterContoursOutput().size() + "] [processCount:" + processCount++ + "]");
 
@@ -96,7 +102,8 @@ public class RobotVision extends Thread implements SubSystem {
                 setPegX(0);
             }
 
-
+            // release any resources held in the source Map as these can be expensive
+            //sourceMap.release();  // todo: after testing that a memory leak occurs when we do not  release, remove the comment block
         }
     }
 
