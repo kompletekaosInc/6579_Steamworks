@@ -4,8 +4,6 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
-import edu.wpi.first.wpilibj.vision.VisionThread;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
@@ -26,7 +24,7 @@ public class RobotVision extends Thread implements SubSystem {
     private final Object imgLock = new Object();  // to lock access to te centreX variable
 
     private UsbCamera camera = null;  // it will remain null if we have no camera plugged into the USB ports
-    private Mat sourceMap = new Mat();;  // Maps are expensive, so we will re-use this
+    private Mat sourceMat = new Mat();  // Maps are expensive, so we will re-use this
 
     private GripPipeline gripPipeline = new GripPipeline();
 
@@ -46,9 +44,10 @@ public class RobotVision extends Thread implements SubSystem {
             configureVisionCameraSettingsForTracking();
 
         } catch (Exception e) {
-            System.out.println("Exception constructing RobotVision");
+            System.out.println("Exception constructing camera in RobotVision");
             e.printStackTrace();
             camera = null;  // we need to test the camera is NOT null before trying to use it
+            setPegX(0);  // default Peg x is directly in front
         }
 
     }
@@ -73,12 +72,12 @@ public class RobotVision extends Thread implements SubSystem {
         if (performVisionTracking) {
 
             // get camera image
-            sourceMap.empty();  // we re-use the same Map to process the source image
+            sourceMat.empty();  // we re-use the same Map to process the source image
             CvSink cvSink = CameraServer.getInstance().getVideo();
-            cvSink.grabFrame(sourceMap);
+            cvSink.grabFrame(sourceMat);
 
             // create an instance of the GRIP gripPipeline
-            gripPipeline.process(sourceMap);
+            gripPipeline.process(sourceMat);
 
             System.out.println("Inside thread [contours:" + gripPipeline.filterContoursOutput().size() + "] [processCount:" + processCount++ + "]");
 
@@ -93,9 +92,8 @@ public class RobotVision extends Thread implements SubSystem {
                 SmartDashboard.putNumber("r.x", r.x);
                 SmartDashboard.putNumber("r.width", r.width);
 
-
-                System.out.println("centre X " + r.x + (r.width / 2));
                 setPegX(r.x + (r.width / 2));
+                System.out.println("Peg X = " + getPegX());
             }
             else
             {
@@ -103,7 +101,7 @@ public class RobotVision extends Thread implements SubSystem {
             }
 
             // release any resources held in the source Map as these can be expensive
-            //sourceMap.release();  // todo: after testing that a memory leak occurs when we do not  release, remove the comment block
+            sourceMat.release();  // todo: after testing that a memory leak occurs when we do not  release, remove the comment block
         }
     }
 

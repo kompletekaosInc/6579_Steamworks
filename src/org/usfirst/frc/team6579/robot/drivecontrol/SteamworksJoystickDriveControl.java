@@ -93,6 +93,9 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
         //turn 180 degrees
         robot.getDrivetrain().gyroTurnLeft(180);
     }
+    protected void processButton11(Robot robot){
+        robot.getDrivetrain().resetGyro();
+    }
     protected void processButton12(Robot robot )
     {
         //Takes gyro angle
