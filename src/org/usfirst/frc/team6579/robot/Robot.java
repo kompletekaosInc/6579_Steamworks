@@ -196,4 +196,39 @@ public class Robot extends IterativeRobot
     public RobotVision getVision() {
         return vision;
     }
+
+    //Vision
+
+    /**
+     * This function is for aligning to the vision tape on the peg.
+     */
+    public void followX( double basePower ){
+
+	    double finalPosition;
+	    finalPosition = getVision().getPegX();
+	    double leftPower = basePower;
+	    double rightPower = basePower;
+
+	    if (finalPosition > 0)
+	    {
+	        // the tape is to the right side of the robot
+            // more power to left motor
+            leftPower = basePower + (finalPosition);
+	        //drivetrain.setPower(-finalPosition , 0);
+        }
+        else if (finalPosition < 0)
+        {
+	        // the tape is on the left side of the robot
+            // more power to right motor
+            rightPower = basePower + Math.abs(finalPosition);
+            //drivetrain.setPower(0, finalPosition);
+        }
+        else
+        {
+            // the robot is directly in front of the tape
+            // we are on target, just use basePower
+        }
+
+        drivetrain.setPower(leftPower, rightPower);
+    }
 }

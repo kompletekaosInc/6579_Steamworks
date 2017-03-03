@@ -16,6 +16,7 @@ public class TestStrategy2 extends AutoStrategy {
     public void run(Robot robot) {
 
         SmartDashboard.putString("Auton selection", this.toString());
+        robot.getDrivetrain().setPower(0.4,0.4);
 
     }
 }

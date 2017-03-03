@@ -74,6 +74,11 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     }
     protected void processButton7(Robot robot )
     {
+        //activates vision tracking
+        robot.followX(0.2);
+    }
+    protected void processButton6(Robot robot )
+    {
         //prepares for climber: lowers fuel flap all the way and spins colanders
         robot.getFuelSystem().fullyLowerFlap();
         robot.getClimber().collectRope();

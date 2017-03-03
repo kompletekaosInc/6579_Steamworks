@@ -87,9 +87,9 @@ public class Drivetrain implements SubSystem {
 	public void setPower(double leftPower, double rightPower)
 	{
 	    //sets the left motor controllers
-		leftToughbox.set(-leftPower);
+		leftToughbox.set(leftPower);
 		//sets the right motor controllers
-		rightToughbox.set(rightPower);
+		rightToughbox.set(-rightPower);
 		
 	}
 

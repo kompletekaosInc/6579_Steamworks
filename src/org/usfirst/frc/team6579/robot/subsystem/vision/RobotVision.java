@@ -92,7 +92,12 @@ public class RobotVision extends Thread implements SubSystem {
                 SmartDashboard.putNumber("r.x", r.x);
                 SmartDashboard.putNumber("r.width", r.width);
 
-                setPegX(r.x + (r.width / 2));
+                double finalPosition;
+                finalPosition = (r.x + (r.width / 2))-80;
+                // scale back to a number between -1 to 1
+                finalPosition = finalPosition/240;
+
+                setPegX(finalPosition);
                 System.out.println("Peg X = " + getPegX());
             }
             else
@@ -136,6 +141,11 @@ public class RobotVision extends Thread implements SubSystem {
             return centreX;
         }
     }
+
+    /**
+     * Has to be a number between -1 and 1 where 0 is the peg directly in front.
+     * @param x
+     */
     private void setPegX(double x)
     {
         synchronized (imgLock) {

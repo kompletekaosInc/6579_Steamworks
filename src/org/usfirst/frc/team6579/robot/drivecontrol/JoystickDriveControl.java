@@ -62,11 +62,12 @@ public abstract class JoystickDriveControl implements DriveControl{
             double stickY = stick.getY();
 
             //calculates the power to drive the robot ToDo: Consider capping the powers/powerband
-            double leftPowerMath = (stickY - stickX);
-            double rightPowerMath = (stickY + stickX);
+            double leftPowerMath = (stickX-stickY);
+            double rightPowerMath = (stickX+stickY);
 
             //puts the calculated power back to the drive train
-            drivetrain.setPower(leftPowerMath, rightPowerMath);
+            drivetrain.setPower(leftPowerMath, -rightPowerMath);
+            //ToDo: check arcade drive logic from reddit and compare
     }
     /**
      * This method is basically a scheduler of the methods to be called by the joystick during a match
