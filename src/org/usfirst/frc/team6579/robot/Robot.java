@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team6579.robot.autonomous.AutoStrategy;
+import org.usfirst.frc.team6579.robot.autonomous.RightPegAuto;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy;
 import org.usfirst.frc.team6579.robot.autonomous.TestStrategy2;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
@@ -112,6 +113,8 @@ public class Robot extends IterativeRobot
         autoChooser.addDefault("Default autonomous strategy", new TestStrategy());
         //adds the other strategies in the list
         autoChooser.addObject("Second autonomous choice", new TestStrategy2());
+        //adds another strategy
+		autoChooser.addObject("Third autonomous choice", new RightPegAuto());
         //puts selector data to smart dashboard
         SmartDashboard.putData("Autonomous code selector", autoChooser);
     }
@@ -204,23 +207,23 @@ public class Robot extends IterativeRobot
      */
     public void followX( double basePower ){
 
-	    double finalPosition;
-	    finalPosition = getVision().getPegX();
+	    double powerIncrement;
+	    powerIncrement = getVision().getPegX();
 	    double leftPower = basePower;
 	    double rightPower = basePower;
 
-	    if (finalPosition > 0)
+	    if (powerIncrement > 0)
 	    {
 	        // the tape is to the right side of the robot
             // more power to left motor
-            leftPower = basePower + (finalPosition);
+            leftPower = basePower + (powerIncrement);
 	        //drivetrain.setPower(-finalPosition , 0);
         }
-        else if (finalPosition < 0)
+        else if (powerIncrement < 0)
         {
 	        // the tape is on the left side of the robot
             // more power to right motor
-            rightPower = basePower + Math.abs(finalPosition);
+            rightPower = basePower + Math.abs(powerIncrement);
             //drivetrain.setPower(0, finalPosition);
         }
         else

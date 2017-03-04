@@ -84,18 +84,8 @@ public class RobotVision extends Thread implements SubSystem {
             //process image through gripPipeline
 
             if (!gripPipeline.filterContoursOutput().isEmpty()) {
-                // how many contours do we have?
-
-
-
-                Rect r = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(0));
-                SmartDashboard.putNumber("r.x", r.x);
-                SmartDashboard.putNumber("r.width", r.width);
-
-                double finalPosition;
-                finalPosition = (r.x + (r.width / 2))-80;
-                // scale back to a number between -1 to 1
-                finalPosition = finalPosition/240;
+                // process contours
+                double finalPosition = getFinalPosition();
 
                 setPegX(finalPosition);
                 System.out.println("Peg X = " + getPegX());
@@ -108,6 +98,72 @@ public class RobotVision extends Thread implements SubSystem {
             // release any resources held in the source Map as these can be expensive
             sourceMat.release();  // todo: after testing that a memory leak occurs when we do not  release, remove the comment block
         }
+    }
+
+    /**
+     * We have at least one contour when this is called
+     *
+     * @return
+     */
+    private double getFinalPosition() {
+        //Declares tape variables
+        Rect leftTape = null;
+        double leftMiddle = 0;
+
+        Rect rightTape = null;
+        double rightMiddle = 0;
+
+        double finalPosition = 0;
+
+        double powerIncrement = 0;
+
+        //This is the middle of the distance between the tapes
+        double centreOfDistanceBetweenTapes;
+
+        //assumes that contour 0 is right hand tape
+        rightTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(0));
+        SmartDashboard.putNumber("rightTape.x", rightTape.x);
+        SmartDashboard.putNumber("rightTape.width", rightTape.width);
+        rightMiddle = rightTape.x + (rightTape.width/2);
+        SmartDashboard.putNumber("rightMiddle",rightMiddle);
+
+        if (gripPipeline.filterContoursOutput().size()==2){
+            //Assumes we have two tapes, and that contour 1 is the left tape
+            leftTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(1));
+            SmartDashboard.putNumber("leftTape.x", leftTape.x);
+            SmartDashboard.putNumber("leftTape.width", leftTape.width);
+            leftMiddle = leftTape.x + (leftTape.width/2);
+            SmartDashboard.putNumber("leftMiddle", leftMiddle);
+
+
+            //final position for two tapes
+            centreOfDistanceBetweenTapes = (rightMiddle - leftMiddle) / 2;
+            SmartDashboard.putNumber("centreOfDistanceBetweenTapes",centreOfDistanceBetweenTapes);
+            finalPosition = rightMiddle-centreOfDistanceBetweenTapes;
+
+
+            SmartDashboard.putBoolean("Two contours",true);
+
+        }
+        else{
+
+            finalPosition = (rightTape.x + (rightTape.width / 2));
+            // scale back to a number between -1 to 1, and then divides by 3 for a power cap, hence 240
+            SmartDashboard.putBoolean("Two contours",false);
+
+
+        }
+
+        SmartDashboard.putNumber("Final middle X", finalPosition);
+
+        finalPosition = finalPosition-80;
+
+
+        powerIncrement = finalPosition / 240;
+
+        SmartDashboard.putNumber("scaled finalPosition",finalPosition);
+        SmartDashboard.putNumber("powerIncrement", powerIncrement);
+        return powerIncrement;
     }
 
     /**

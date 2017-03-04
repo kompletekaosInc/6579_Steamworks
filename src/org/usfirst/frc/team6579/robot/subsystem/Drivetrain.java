@@ -142,8 +142,8 @@ public class Drivetrain implements SubSystem {
         gyroPowerAdjustment = currentGyroAngle - (gyroTarget % 360);
         gyroPowerAdjustment = gyroPowerAdjustment * gyroGain;
 
-        double gyroMotorPowerLeft = -power - gyroPowerAdjustment;
-        double gyroMotorPowerRight = power - gyroPowerAdjustment;
+        double gyroMotorPowerLeft = power - gyroPowerAdjustment;
+        double gyroMotorPowerRight = -power - gyroPowerAdjustment;
 
         //Makes the motors move
         leftToughbox.set(gyroMotorPowerLeft);
