@@ -15,6 +15,7 @@ import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
  */
 public class RobotVision extends Thread implements SubSystem {
 
+
     // indicate if we should be processing or not
     private boolean performVisionTracking = false;  // don't perform expensive processing unless we are asked to
 
@@ -50,7 +51,7 @@ public class RobotVision extends Thread implements SubSystem {
 
             // we have a camera and it is configured, lets start vision processing
             // in the background
-            this.start();
+            //this.start();   // TODO:  this is causing trouble, don't run as a thread at the moment
 
         } catch (Exception e) {
             System.out.println("Exception constructing camera in RobotVision");
@@ -68,21 +69,22 @@ public class RobotVision extends Thread implements SubSystem {
     @Override
     public void run() {
 
-        int i = 1;
-        // run loop for ever
-        while (!interrupted()) {
-
-            if (Robot.debug)
-                System.out.println("RobotVision.run: i=" + i++);
-            // process any images the camera sees
-            processImageInPipeline();
-            try {
-                sleep(threadSleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                interrupt();
-            }
-        }
+//        int i = 1;
+//        // run loop for ever
+//        while (!interrupted()) {
+//
+//            if (Robot.debug)
+//                System.out.println("RobotVision.run: i=" + i++);
+//            // process any images the camera sees
+//            processImageInPipeline();
+//            publishStats();
+//            try {
+//                sleep(threadSleepTime);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//                interrupt();
+//            }
+//        }
     }
 
     /**
@@ -220,7 +222,6 @@ public class RobotVision extends Thread implements SubSystem {
     public void startTrackingPeg() {
         //configureVisionCameraSettingsForTracking();
         performVisionTracking = true;
-        //visionThread.start();
     }
 
     /**
@@ -228,11 +229,13 @@ public class RobotVision extends Thread implements SubSystem {
      */
     public void stopTrackingPeg(){
         // stop the vision thread from performing the expensive processing of the video images
-        //visionThread.interrupt();
         performVisionTracking = false;
-
-        // todo:  maybe restore video to normal capture settings
     }
+
+    public boolean isPerformVisionTracking() {
+        return performVisionTracking;
+    }
+
 
     /**
      * Returns the X value of the position in image of the peg.

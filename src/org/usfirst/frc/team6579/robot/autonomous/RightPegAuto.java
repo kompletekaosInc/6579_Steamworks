@@ -24,7 +24,6 @@ public class RightPegAuto extends AutoStrategy{
 
 
         // do the strategy here:
-
         robot.getDrivetrain().resetGyro();
         double followAngle = robot.getDrivetrain().getModGyroAngle();
 
@@ -41,13 +40,18 @@ public class RightPegAuto extends AutoStrategy{
         robot.getDrivetrain().stop();
 
         //starts tracking the peg
+
+
         robot.getVision().startTrackingPeg();
         msTrackingPegStartTime = System.currentTimeMillis();
 
         while (System.currentTimeMillis()-msTrackingPegStartTime < 5000)
         {
-            //System.out.println("tracking Peg in auto");
+
             robot.getVision().processImageInPipeline();
+
+            if (robot.getVision().isPerformVisionTracking())
+                System.out.println("tracking Peg in auto [y:" + robot.getVision().getTapeY() + "] isPerformVisionTracking="+robot.getVision().isPerformVisionTracking());
 
             if (robot.getVision().getTapeY() > 50) {
                 SmartDashboard.putBoolean("Close to Peg", false);

@@ -153,7 +153,7 @@ public class Robot extends IterativeRobot
 		//Publishes the subsystem status'
 		publishSubSystemStats();
 
-		vision.processImageInPipeline();
+		//vision.processImageInPipeline(); //This is currently done in the strategies as required
 
         //autoStrategy.run(this);
 
@@ -173,10 +173,10 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//publishes the stats of the various subystems
+		//publishes the stats of the various subsystems
 		publishSubSystemStats();
 
-        //vision.processImageInPipeline();
+        vision.processImageInPipeline();
 
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 
