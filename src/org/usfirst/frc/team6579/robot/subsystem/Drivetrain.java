@@ -143,7 +143,7 @@ public class Drivetrain implements SubSystem {
         gyroPowerAdjustment = gyroPowerAdjustment * gyroGain;
 
         double gyroMotorPowerLeft = power - gyroPowerAdjustment;
-        double gyroMotorPowerRight = -power - gyroPowerAdjustment;
+        double gyroMotorPowerRight = -power - gyroPowerAdjustment; //ToDo: Make adjustment to remove the - from in front when changing to setPower
 
         //Makes the motors move
         leftToughbox.set(gyroMotorPowerLeft);
