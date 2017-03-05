@@ -9,31 +9,44 @@ import org.usfirst.frc.team6579.robot.Robot;
 public class RightPegAuto extends AutoStrategy{
     // Basic Strategy is:
     // drive froward to baseline (2 seconds)
-    private boolean reachedBaseline = false;
+    private long secondsToBaseline = 2000;
+    private long msDrivingForwardStartTime = 0;
     // stop
     // turn 60 left
-    private boolean turnComplete = false;
     // stop
     // vision track to peg for 4 seconds
-    private boolean trackVisionComplete = false;
     private long msTrackingPegStartTime = 0;
     // stop
 
     public void start(Robot robot)
     {
         super.start(robot);
-        reachedBaseline = false;
-        turnComplete = false;
-        trackVisionComplete = false;
 
 
         // do the strategy here:
+
+        robot.getDrivetrain().resetGyro();
+        double followAngle = robot.getDrivetrain().getModGyroAngle();
+
+        msDrivingForwardStartTime = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - msDrivingForwardStartTime) < secondsToBaseline)
+        {
+            robot.getDrivetrain().followGyro(0.4,followAngle);
+        }
+        robot.getDrivetrain().stop();
+
+        //Turns 60 degrees tp the left
+        robot.getDrivetrain().gyroTurn(60,true);
+
+        robot.getDrivetrain().stop();
+
+        //starts tracking the peg
         robot.getVision().startTrackingPeg();
         msTrackingPegStartTime = System.currentTimeMillis();
 
         while (System.currentTimeMillis()-msTrackingPegStartTime < 5000)
         {
-            System.out.println("tracking Peg in auto");
+            //System.out.println("tracking Peg in auto");
             robot.getVision().processImageInPipeline();
 
             if (robot.getVision().getTapeY() > 50) {
@@ -46,10 +59,13 @@ public class RightPegAuto extends AutoStrategy{
                 // we are close to the peg, slow down
                 //robot.followX(0.2);
                 robot.getDrivetrain().setPower(0.2, 0.2);
+                robot.getVision().stopTrackingPeg();
             }
         }
 
-        trackVisionComplete = true;
+        robot.getDrivetrain().stop();
+
+
 
     }
 
@@ -97,6 +113,7 @@ public class RightPegAuto extends AutoStrategy{
             robot.getVision().startTrackingPeg();
             // about to start tracking peg
             msTrackingPegStartTime = System.currentTimeMillis();
+
 
             turnComplete = true;
         }

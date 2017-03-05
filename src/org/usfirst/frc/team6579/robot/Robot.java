@@ -3,10 +3,7 @@ package org.usfirst.frc.team6579.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team6579.robot.autonomous.AutoStrategy;
-import org.usfirst.frc.team6579.robot.autonomous.RightPegAuto;
-import org.usfirst.frc.team6579.robot.autonomous.TestStrategy;
-import org.usfirst.frc.team6579.robot.autonomous.TestStrategy2;
+import org.usfirst.frc.team6579.robot.autonomous.*;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
 import org.usfirst.frc.team6579.robot.drivecontrol.SteamworksJoystickDriveControl;
 import org.usfirst.frc.team6579.robot.subsystem.Climber;
@@ -30,6 +27,7 @@ import java.util.List;
 public class Robot extends IterativeRobot 
 {
 
+    public static boolean debug = false;
 
 
     // subsystems
@@ -107,16 +105,34 @@ public class Robot extends IterativeRobot
      * This is the autonomous strategy selector. Add all new strategies here.
      */
     private void populateAutoSelector() {
-        //populating chooser and sending to smart dashboard
+        //System.out.println("populateAutoSelector");
+//        //populating chooser and sending to smart dashboard
+//        autoChooser = new SendableChooser();
+//        //picks the default autonomous strategy
+//        autoChooser.addObject("Default autonomous strategy", new TestStrategy());
+//        //adds the other strategies in the list
+//        autoChooser.addObject("Second autonomous choice", new TestStrategy2());
+//        //adds another strategy
+//		autoChooser.addObject("Right Peg Autonomous, vision and gyro", new RightPegAuto());
+//		//adds another strategy
+//		autoChooser.addDefault("Middle Peg Autonomous", new MiddlePegAuto());
+//        //puts selector data to smart dashboard
+//
+
+        //populating chooser and sending to dashboard
         autoChooser = new SendableChooser();
-        //picks the default autonomous strategy
-        autoChooser.addDefault("Default autonomous strategy", new TestStrategy());
-        //adds the other strategies in the list
-        autoChooser.addObject("Second autonomous choice", new TestStrategy2());
-        //adds another strategy
-		autoChooser.addObject("Third autonomous choice", new RightPegAuto());
-        //puts selector data to smart dashboard
-        SmartDashboard.putData("Autonomous code selector", autoChooser);
+        //Picks a default autonomous strategy
+        autoChooser.addDefault("Middle Peg Auto", new MiddlePegAuto());
+        //Adds another object to the chooser
+        autoChooser.addObject("Right Peg Auto", new RightPegAuto());
+        //Adds another object to the chooser
+        autoChooser.addObject("Left Peg Autonomous", new LeftPegAuto());
+        //Puts to SmartDashboard
+        SmartDashboard.putData("Autonomous Code Selector", autoChooser);
+        //SmartDashboard.putData("Autonomous code selector", autoChooser);
+
+
+
     }
 
     /**
@@ -139,7 +155,7 @@ public class Robot extends IterativeRobot
 
 		vision.processImageInPipeline();
 
-        autoStrategy.run(this);
+        //autoStrategy.run(this);
 
 	}
 
@@ -160,7 +176,7 @@ public class Robot extends IterativeRobot
 		//publishes the stats of the various subystems
 		publishSubSystemStats();
 
-        vision.processImageInPipeline();
+        //vision.processImageInPipeline();
 
 		driveControl.giveCommands(this); // Give control of the robot to the driveControl object
 

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team6579.robot.Robot;
 import org.usfirst.frc.team6579.robot.subsystem.SubSystem;
 
 /**
@@ -16,6 +17,8 @@ public class RobotVision extends Thread implements SubSystem {
 
     // indicate if we should be processing or not
     private boolean performVisionTracking = false;  // don't perform expensive processing unless we are asked to
+
+    private long threadSleepTime = 100;   // process around 10 times a second
 
     //private VisionThread visionThread;
     private long processCount = 0;
@@ -41,8 +44,13 @@ public class RobotVision extends Thread implements SubSystem {
             //get a reference to the camera to use for vision
             camera = CameraServer.getInstance().startAutomaticCapture();
 
+            // default assume the camera is to be configured for Image Tracking
             // by default, configure the camera for capturing dark images for vision tracking
             configureVisionCameraSettingsForTracking();
+
+            // we have a camera and it is configured, lets start vision processing
+            // in the background
+            this.start();
 
         } catch (Exception e) {
             System.out.println("Exception constructing camera in RobotVision");
@@ -53,6 +61,33 @@ public class RobotVision extends Thread implements SubSystem {
 
     }
 
+    /**
+     * Once the class is constructed with Camera, this class is a Thread that can run.
+     * Each period this thread will processImageInPiple() for the image available in the camera.
+     */
+    @Override
+    public void run() {
+
+        int i = 1;
+        // run loop for ever
+        while (!interrupted()) {
+
+            if (Robot.debug)
+                System.out.println("RobotVision.run: i=" + i++);
+            // process any images the camera sees
+            processImageInPipeline();
+            try {
+                sleep(threadSleepTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                interrupt();
+            }
+        }
+    }
+
+    /**
+     * These settings are specific to limit bright light and focus the image for vision tracking.
+     */
     private void configureVisionCameraSettingsForTracking() {
 
         camera.setResolution(320, 240);
@@ -60,6 +95,7 @@ public class RobotVision extends Thread implements SubSystem {
         camera.setExposureManual(0);
         camera.setWhiteBalanceManual(0);
     }
+
 
     /**
      * Run one off process of the image to find x.
@@ -80,7 +116,7 @@ public class RobotVision extends Thread implements SubSystem {
             // create an instance of the GRIP gripPipeline
             gripPipeline.process(sourceMat);
 
-            System.out.println("Inside thread [contours:" + gripPipeline.filterContoursOutput().size() + "] [processCount:" + processCount++ + "]");
+            //System.out.println("Inside thread [contours:" + gripPipeline.filterContoursOutput().size() + "] [processCount:" + processCount++ + "]");
 
             //process image through gripPipeline
 
@@ -89,7 +125,7 @@ public class RobotVision extends Thread implements SubSystem {
                 double finalPosition = getFinalPosition();
 
                 setPegX(finalPosition);
-                System.out.println("Peg X = " + getPegX());
+                //System.out.println("Peg X = " + getPegX());
             }
             else
             {
@@ -123,51 +159,55 @@ public class RobotVision extends Thread implements SubSystem {
 
         //assumes that contour 0 is right hand tape
         rightTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(0));
-        SmartDashboard.putNumber("rightTape.x", rightTape.x);
-        SmartDashboard.putNumber("rightTape.y", rightTape.y);
+        //SmartDashboard.putNumber("rightTape.x", rightTape.x);
+        //SmartDashboard.putNumber("rightTape.y", rightTape.y);
 
         setTapeY(rightTape.y);
 
-        SmartDashboard.putNumber("rightTape.width", rightTape.width);
+        //SmartDashboard.putNumber("rightTape.width", rightTape.width);
         rightMiddle = rightTape.x + (rightTape.width/2);
-        SmartDashboard.putNumber("rightMiddle",rightMiddle);
+        if (Robot.debug)
+            SmartDashboard.putNumber("rightMiddle",rightMiddle);
 
         if (gripPipeline.filterContoursOutput().size()==2){
             //Assumes we have two tapes, and that contour 1 is the left tape
             leftTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(1));
-            SmartDashboard.putNumber("leftTape.x", leftTape.x);
-            SmartDashboard.putNumber("leftTape.width", leftTape.width);
+            //SmartDashboard.putNumber("leftTape.x", leftTape.x);
+            //SmartDashboard.putNumber("leftTape.width", leftTape.width);
             leftMiddle = leftTape.x + (leftTape.width/2);
-            SmartDashboard.putNumber("leftMiddle", leftMiddle);
+            if (Robot.debug)
+                SmartDashboard.putNumber("leftMiddle", leftMiddle);
 
 
             //final position for two tapes
             centreOfDistanceBetweenTapes = (rightMiddle - leftMiddle) / 2;
-            SmartDashboard.putNumber("centreOfDistanceBetweenTapes",centreOfDistanceBetweenTapes);
+            //SmartDashboard.putNumber("centreOfDistanceBetweenTapes",centreOfDistanceBetweenTapes);
             finalPosition = rightMiddle-centreOfDistanceBetweenTapes;
-
-
-            SmartDashboard.putBoolean("Two contours",true);
+            if (Robot.debug)
+                SmartDashboard.putBoolean("Two contours",true);
 
         }
         else{
 
             finalPosition = (rightTape.x + (rightTape.width / 2));
             // scale back to a number between -1 to 1, and then divides by 3 for a power cap, hence 240
-            SmartDashboard.putBoolean("Two contours",false);
+            if (Robot.debug)
+                SmartDashboard.putBoolean("Two contours",false);
 
 
         }
 
-        SmartDashboard.putNumber("Final middle X", finalPosition);
+        //SmartDashboard.putNumber("Final middle X", finalPosition);
 
         finalPosition = finalPosition-80;
 
 
         powerIncrement = finalPosition / 240;
 
-        SmartDashboard.putNumber("scaled finalPosition",finalPosition);
-        SmartDashboard.putNumber("powerIncrement", powerIncrement);
+        if (Robot.debug) {
+            SmartDashboard.putNumber("scaled finalPosition", finalPosition);
+            SmartDashboard.putNumber("powerIncrement", powerIncrement);
+        }
         return powerIncrement;
     }
 
@@ -178,6 +218,7 @@ public class RobotVision extends Thread implements SubSystem {
      * return double X co-ordinate that is the centre between the tapes.
      */
     public void startTrackingPeg() {
+        //configureVisionCameraSettingsForTracking();
         performVisionTracking = true;
         //visionThread.start();
     }
@@ -194,7 +235,8 @@ public class RobotVision extends Thread implements SubSystem {
     }
 
     /**
-     * Gets centreX
+     * Returns the X value of the position in image of the peg.
+     * TODO:  this has changed a little to scale back to a number that can be used to steer the robot.
      * @return
      */
     public double getPegX(){
@@ -214,6 +256,11 @@ public class RobotVision extends Thread implements SubSystem {
         }
     }
 
+    /**
+     * Returns the Y coordinate of the Right Tap (or contour(0)) if it exists.
+     * Returns 0 if no tape found in image.
+     * @return
+     */
     public double getTapeY() {
         return tapeY;
     }
@@ -222,12 +269,6 @@ public class RobotVision extends Thread implements SubSystem {
         this.tapeY = tapeY;
     }
 
-    /**
-     * Change camera settings to allow normal video viewing.
-     */
-    public void startNormalVideo(){
-        // todo: might be just changing the camera settings to allow normal exposure and brightness etc... for video view from robot
-    }
 
     @Override
     public void publishStats() {
