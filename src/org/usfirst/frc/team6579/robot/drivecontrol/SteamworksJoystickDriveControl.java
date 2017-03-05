@@ -72,6 +72,7 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
         //drives with the followGyro method
         robot.getDrivetrain().followGyro((stick.getY()),takenAngle);
     }
+
     protected void processButton7(Robot robot )
     {
         //activates vision tracking
@@ -91,15 +92,18 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     protected void processButton9(Robot robot )
     {
         //touches the davit softly
-        robot.getClimber().touchDavit();
+        //robot.getClimber().touchDavit();
+        robot.getDrivetrain().gyroTurn(60, false);
     }
     protected void processButton10(Robot robot )
     {
         //turn 180 degrees
-        robot.getDrivetrain().gyroTurnLeft(180);
+        robot.getDrivetrain().gyroTurn(180, true);
     }
     protected void processButton11(Robot robot){
-        robot.getDrivetrain().resetGyro();
+
+        //robot.getDrivetrain().resetGyro();
+        robot.getDrivetrain().gyroTurn(60, true);
     }
     protected void processButton12(Robot robot )
     {

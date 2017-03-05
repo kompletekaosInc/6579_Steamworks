@@ -157,18 +157,90 @@ public class Drivetrain implements SubSystem {
         double currentGyroAngle = (getGyroAngle() % 360); //ToDo: Get this to work!! start to figure out why the refresh won't work and figure out mod command ("%")
         double angleToTurn = currentGyroAngle + targetAngle;
 
-        while ((angleToTurn - getModGyroAngle()) >= 70) {
-            setPower(-0.5, 0.5);
+        SmartDashboard.putNumber("turn left targetAngle", targetAngle);
+        SmartDashboard.putNumber("turn left angleToTurn",angleToTurn);
+        System.out.println("targetAngle " + targetAngle);
+        System.out.println("angleToTurn "+ angleToTurn);
+        //the gyro thinks that left is a negative value
+
+
+        while (!(Math.abs(getModGyroAngle()) >= Math.abs(angleToTurn)))
+        {
+            SmartDashboard.putNumber("getModGyroAngle",getModGyroAngle());
+            setPower(-0.25,0.25);
         }
+        hardStop();
+
         stop();
 
-        while ((angleToTurn - getModGyroAngle()) > 1) {
-            setPower(-0.25, 0.25);
-        }
-
-        stop();
+//        while ((angleToTurn - getModGyroAngle()) >= 70) {
+//            setPower(-0.2, 0.2);
+//        }
+//        stop();
+//
+//        while ((angleToTurn - getModGyroAngle()) > 1) {
+//            setPower(-0.25, 0.25);
+//        }
+//
+//        stop();
     }
 
+    /**
+     * Turns left if "left" is true otherwise turns right until the robot reaches the target angle.
+     * @param targetAngle
+     * @param left
+     */
+    public void gyroTurn(double targetAngle, boolean left)
+    {
+        double turnPower = 0.25;
+
+        SmartDashboard.putNumber("gyroTurn.targetAngle", targetAngle);
+        SmartDashboard.putBoolean("gyroTurn.left", left);
+
+        // reset gyro sensor to zero
+        gyro.reset();   // do not calibrate as this will stop the world and make the gyro crazy
+
+        while ( Math.abs(getModGyroAngle()) < Math.abs(targetAngle))
+        {
+            if (left)
+            {
+                setPower(-turnPower, turnPower);
+            }
+            else
+            {
+                // must want to turn right
+                setPower(turnPower, -turnPower);
+            }
+        }
+        hardStop();
+        stop();
+
+    }
+
+    /**
+     * This method turns the robot to a degree defined by the user
+     */
+    public void gyroTurnRight(double targetAngle){
+        double currentGyroAngle = (getGyroAngle() % 360); //ToDo: Get this to work!! start to figure out why the refresh won't work and figure out mod command ("%")
+        double angleToTurn = currentGyroAngle + targetAngle;
+
+        SmartDashboard.putNumber("turn right targetAngle", targetAngle);
+        SmartDashboard.putNumber("turn right angleToTurn",angleToTurn);
+        System.out.println("targetAngle " + targetAngle);
+        System.out.println("angleToTurn "+ angleToTurn);
+        //the gyro thinks that left is a negative value
+
+
+        while (!(Math.abs(getModGyroAngle()) >= Math.abs(angleToTurn)))
+        {
+            SmartDashboard.putNumber("getModGyroAngle",getModGyroAngle());
+            setPower(0.25,-0.25);
+        }
+        hardStop();
+
+        stop();
+
+    }
 
     /**
      * Gets the current gyro angle
@@ -189,7 +261,10 @@ public class Drivetrain implements SubSystem {
      * @return
      */
     public double getModGyroAngle(){
-        return getGyroAngle() % 360;
+        double gyroModAngle = getGyroAngle() % 360;
+        SmartDashboard.putNumber("getModGyroAngle", gyroModAngle);
+
+        return gyroModAngle;
     }
 
     /**

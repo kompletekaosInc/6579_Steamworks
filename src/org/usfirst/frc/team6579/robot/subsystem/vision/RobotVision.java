@@ -20,6 +20,7 @@ public class RobotVision extends Thread implements SubSystem {
     //private VisionThread visionThread;
     private long processCount = 0;
     private double centreX = 0.0;
+    private double tapeY = 0.0;
 
     private final Object imgLock = new Object();  // to lock access to te centreX variable
 
@@ -123,6 +124,10 @@ public class RobotVision extends Thread implements SubSystem {
         //assumes that contour 0 is right hand tape
         rightTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(0));
         SmartDashboard.putNumber("rightTape.x", rightTape.x);
+        SmartDashboard.putNumber("rightTape.y", rightTape.y);
+
+        setTapeY(rightTape.y);
+
         SmartDashboard.putNumber("rightTape.width", rightTape.width);
         rightMiddle = rightTape.x + (rightTape.width/2);
         SmartDashboard.putNumber("rightMiddle",rightMiddle);
@@ -207,6 +212,14 @@ public class RobotVision extends Thread implements SubSystem {
         synchronized (imgLock) {
             centreX = x;
         }
+    }
+
+    public double getTapeY() {
+        return tapeY;
+    }
+
+    private void setTapeY(double tapeY) {
+        this.tapeY = tapeY;
     }
 
     /**

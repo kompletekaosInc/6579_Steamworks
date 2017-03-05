@@ -22,7 +22,7 @@ public abstract class AutoStrategy {
     /**
      * This code is basically auto.init for the timer and auto strategy side of the world.
      */
-    public void start(){
+    public void start(Robot robot){
         timer.reset();
         timer.start();
 

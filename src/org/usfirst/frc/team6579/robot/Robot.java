@@ -125,7 +125,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousInit() {
         autoStrategy = (AutoStrategy) autoChooser.getSelected();
-        autoStrategy.start();
+        autoStrategy.start(this);
 	}
 
 	/**
@@ -136,6 +136,8 @@ public class Robot extends IterativeRobot
 
 		//Publishes the subsystem status'
 		publishSubSystemStats();
+
+		vision.processImageInPipeline();
 
         autoStrategy.run(this);
 

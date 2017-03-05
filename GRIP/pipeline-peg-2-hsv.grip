@@ -38,7 +38,7 @@
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>38.98381294964029</double>
+          <double>25.22482014388489</double>
           <double>161.91850594227503</double>
         </value>
       </grip:Input>
@@ -49,12 +49,12 @@
       <grip:Input step="2" socket="1">
         <value>false</value>
       </grip:Input>
-      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Filter Contours">
       <grip:Input step="3" socket="0"/>
       <grip:Input step="3" socket="1">
-        <value>70.0</value>
+        <value>50.0</value>
       </grip:Input>
       <grip:Input step="3" socket="2">
         <value>0.0</value>
@@ -94,20 +94,20 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="true"/>
-      <grip:Input step="1" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output source="1" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
+      <grip:Input step="3" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="1" socket="0" previewed="true"/>
       <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
-      <grip:Input step="3" socket="0"/>
+      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="1" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
@@ -123,7 +123,7 @@
     <language>Java</language>
     <className>GripPipeline</className>
     <implementWpilibPipeline>true</implementWpilibPipeline>
-    <saveDir>/Users/Jiah/GRIP</saveDir>
+    <saveDir>/Users/Jiah/Github/6579_Steamworks/src/org/usfirst/frc/team6579/robot/subsystem/vision</saveDir>
     <packageName>org.usfirst.frc.team6579.robot.subsystem.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>

@@ -53,7 +53,7 @@ public class GripPipeline implements VisionPipeline {
 		Mat hslThresholdInput = cvResizeOutput;
 		double[] hslThresholdHue = {63.12949640287769, 97.48726655348048};
 		double[] hslThresholdSaturation = {165.10791366906474, 255.0};
-		double[] hslThresholdLuminance = {38.98381294964029, 161.91850594227503};
+		double[] hslThresholdLuminance = {25.22482014388489, 161.91850594227503};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:
