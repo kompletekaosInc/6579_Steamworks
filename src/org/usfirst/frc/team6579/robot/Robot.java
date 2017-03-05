@@ -127,11 +127,12 @@ public class Robot extends IterativeRobot
         autoChooser.addObject("Right Peg Auto", new RightPegAuto());
         //Adds another object to the chooser
         autoChooser.addObject("Left Peg Autonomous", new LeftPegAuto());
+
+		autoChooser.addObject("Left Peg then Fuel Autonomous", new LeftPegThenFuelAuto());
+
         //Puts to SmartDashboard
         SmartDashboard.putData("Autonomous Code Selector", autoChooser);
         //SmartDashboard.putData("Autonomous code selector", autoChooser);
-
-
 
     }
 
@@ -149,14 +150,8 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void autonomousPeriodic() {
-
 		//Publishes the subsystem status'
 		publishSubSystemStats();
-
-		//vision.processImageInPipeline(); //This is currently done in the strategies as required
-
-        //autoStrategy.run(this);
-
 	}
 
 	/**
