@@ -5,12 +5,10 @@ import org.usfirst.frc.team6579.robot.Robot;
 import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
 
 /**
- * Overrides JoystickDriveControl
- * This is the default joystick layout for the steamworks game.
- * Arcade drive control, also contains vision, gyro and all subsystems.
- * Created by Jiah on 6/3/17.
+ * This is a joystick class to override JoystickDriveControl. It is only used for debugging.
+ * Created by Jiah on 24/2/17.
  */
-public class SteamworksJoystickDriveControl extends JoystickDriveControl {
+public class DebugJoystickDriveControl extends JoystickDriveControl {
 
     private double takenAngle; //used for the followGyro method
 
@@ -50,12 +48,14 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     //These are the buttons that are overridden
     protected void processButton1(Robot robot )
     {
-
+        //raise fuel flap
+        robot.getVision().startTrackingPeg();
     }
     //These are the buttons that are overridden
     protected void processButton2(Robot robot )
     {
-
+        //raise fuel flap
+        robot.getVision().stopTrackingPeg();
     }
     protected void processButton3(Robot robot )
     {
@@ -72,12 +72,13 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
         //drives with the followGyro method
         robot.getDrivetrain().followGyro((stick.getY()),takenAngle);
     }
-    protected void processButton6(Robot robot )
-    {
-        //turn 180 degrees
-        robot.getDrivetrain().gyroTurn(180, true);
-    }
+
     protected void processButton7(Robot robot )
+    {
+        //activates vision tracking
+        robot.followX(0.2);
+    }
+    protected void processButton6(Robot robot )
     {
         //prepares for climber: lowers fuel flap all the way and spins colanders
         robot.getFuelSystem().fullyLowerFlap();
@@ -91,18 +92,18 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     protected void processButton9(Robot robot )
     {
         //touches the davit softly
-        robot.getClimber().touchDavit();
+        //robot.getClimber().touchDavit();
+        robot.getDrivetrain().gyroTurn(60, false);
     }
-    protected void processButton11(Robot robot )
+    protected void processButton10(Robot robot )
     {
-        //activates vision tracking and goes to the middle of the two tapes
-        robot.getVision().startTrackingPeg();
-        robot.followX(0.3);
+        //turn 180 degrees
+        robot.getDrivetrain().gyroTurn(180, true);
     }
-    protected void processButton10(Robot robot)
-    {
+    protected void processButton11(Robot robot){
+
         //robot.getDrivetrain().resetGyro();
-        //robot.getDrivetrain().gyroTurn(60, true);
+        robot.getDrivetrain().gyroTurn(60, true);
     }
     protected void processButton12(Robot robot )
     {
@@ -112,7 +113,6 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     }
     protected void processNoButtons(Robot robot )
     {
-        robot.getVision().stopTrackingPeg();
         robot.getFuelSystem().stopFuelFlap();
         robot.getClimber().stop();
     }

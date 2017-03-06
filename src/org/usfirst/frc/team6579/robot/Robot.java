@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team6579.robot.autonomous.*;
 import org.usfirst.frc.team6579.robot.drivecontrol.DriveControl;
+import org.usfirst.frc.team6579.robot.drivecontrol.DebugJoystickDriveControl;
 import org.usfirst.frc.team6579.robot.drivecontrol.SteamworksJoystickDriveControl;
 import org.usfirst.frc.team6579.robot.subsystem.Climber;
 import org.usfirst.frc.team6579.robot.subsystem.Drivetrain;
@@ -47,6 +48,8 @@ public class Robot extends IterativeRobot
     //private UsbCamera camera = null;
 
 	private DriveControl driveControl;
+    //Joystick selector
+    private SendableChooser stickChoice;
 
 
 	//private Camera camera = null;// 14/02
@@ -54,6 +57,7 @@ public class Robot extends IterativeRobot
     //Autonomous strategy selector
     private AutoStrategy autoStrategy;
     private SendableChooser autoChooser;
+
 
 
 
@@ -90,8 +94,13 @@ public class Robot extends IterativeRobot
 
 
 
+
 		// In future, create selector for if there is more than one drive control
-		driveControl = new SteamworksJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
+		driveControl = new SteamworksJoystickDriveControl(); //DebugJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
+
+        //Stick selector
+        //populateDriveControlSelector();
+        //driveControl = (DriveControl) stickChoice.getSelected();
 
         //Auto selector
         populateAutoSelector();
@@ -102,23 +111,23 @@ public class Robot extends IterativeRobot
 	}
 
     /**
+     * This is the joystick selector. Add all joysticks here. Default should always be SteamworksJoystickDriveControl.
+     */
+	private void populateDriveControlSelector(){
+	    //Adds a default to the joystick selector
+	    stickChoice.addDefault("Steamworks Joystick Drive Control", new SteamworksJoystickDriveControl());
+	    //Adds another option to the joystick selector
+        stickChoice.addObject("Debug Joystick Drive Control", new DebugJoystickDriveControl());
+
+        //Puts the selector into SmartDashboard
+        SmartDashboard.putData("Joystick Selector", stickChoice);
+
+    }
+
+    /**
      * This is the autonomous strategy selector. Add all new strategies here.
      */
     private void populateAutoSelector() {
-        //System.out.println("populateAutoSelector");
-//        //populating chooser and sending to smart dashboard
-//        autoChooser = new SendableChooser();
-//        //picks the default autonomous strategy
-//        autoChooser.addObject("Default autonomous strategy", new TestStrategy());
-//        //adds the other strategies in the list
-//        autoChooser.addObject("Second autonomous choice", new TestStrategy2());
-//        //adds another strategy
-//		autoChooser.addObject("Right Peg Autonomous, vision and gyro", new RightPegAuto());
-//		//adds another strategy
-//		autoChooser.addDefault("Middle Peg Autonomous", new MiddlePegAuto());
-//        //puts selector data to smart dashboard
-//
-
         //populating chooser and sending to dashboard
         autoChooser = new SendableChooser();
         //Picks a default autonomous strategy
@@ -141,7 +150,7 @@ public class Robot extends IterativeRobot
 	 */
 	@Override
 	public void autonomousInit() {
-        autoStrategy = (AutoStrategy) autoChooser.getSelected();
+	    autoStrategy = (AutoStrategy) autoChooser.getSelected();
         autoStrategy.start(this);
 	}
 
@@ -161,7 +170,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopInit() {
 
-	}
+
+    }
 
 	/**
 	 * This function is called periodically during operator control
