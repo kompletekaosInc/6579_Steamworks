@@ -162,7 +162,7 @@ public class RobotVision extends Thread implements SubSystem {
         //assumes that contour 0 is right hand tape
         rightTape = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(0));
         //SmartDashboard.putNumber("rightTape.x", rightTape.x);
-        //SmartDashboard.putNumber("rightTape.y", rightTape.y);
+
 
         setTapeY(rightTape.y);
 
@@ -277,6 +277,7 @@ public class RobotVision extends Thread implements SubSystem {
     public void publishStats() {
         SmartDashboard.putBoolean("Vision.performVisionTracking",performVisionTracking);
         SmartDashboard.putNumber("Peg X", getPegX());
+        SmartDashboard.putNumber("rightTape.y", getTapeY());
         SmartDashboard.putNumber("number of contours", gripPipeline.filterContoursOutput().size());
     }
 }

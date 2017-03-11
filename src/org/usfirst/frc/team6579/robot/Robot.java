@@ -28,7 +28,7 @@ import java.util.List;
 public class Robot extends IterativeRobot 
 {
 
-    public static boolean debug = false;
+    public static boolean debug = true;
 
 
     // subsystems
@@ -96,7 +96,9 @@ public class Robot extends IterativeRobot
 
 
 		// In future, create selector for if there is more than one drive control
-		driveControl = new SteamworksJoystickDriveControl(); //DebugJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
+		driveControl = new DebugJoystickDriveControl();
+		//driveControl = new SteamworksJoystickDriveControl(); //DebugJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
+
 
         //Stick selector
         //populateDriveControlSelector();
@@ -192,7 +194,7 @@ public class Robot extends IterativeRobot
 	/**
 	 * Iterate the list of SubSystems and ask them to publish their stats.
 	 */
-	private void publishSubSystemStats()
+	public void publishSubSystemStats()
 	{
 		Iterator i = subSystems.iterator();
 		while (i.hasNext())

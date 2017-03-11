@@ -14,12 +14,12 @@ import org.usfirst.frc.team6579.robot.Robot;
  */
 public abstract class AutoStrategy {
 
-    // can be overriden but the default is to drive for 2 seconds to get to baseline
+    // can be overridden but the default is to drive for 2 seconds to get to baseline
     protected long getMsToBaseline() {
         return 2000;
     }
 
-    // can be overriden but default is to drive for 5 seconds
+    // can be overridden but default is to drive for 5 seconds
     protected long getMsForVisionTracking() {
         return 5000;
     }
@@ -46,6 +46,7 @@ public abstract class AutoStrategy {
         msDrivingForwardStartTime = System.currentTimeMillis();
         while ((System.currentTimeMillis() - msDrivingForwardStartTime) < getMsToBaseline())
         {
+            robot.publishSubSystemStats();
             robot.getDrivetrain().followGyro(0.4,followAngle);
         }
         robot.getDrivetrain().stop();
@@ -74,8 +75,10 @@ public abstract class AutoStrategy {
             if (Robot.debug && robot.getVision().isPerformVisionTracking())
                 System.out.println("visionTrackToPeg [y:" + robot.getVision().getTapeY() + "] isPerformVisionTracking="+robot.getVision().isPerformVisionTracking());
 
+            robot.publishSubSystemStats();
+
             // TODO:  need to refine what happens if there is no Tape showing in image, what value will y equal?
-            if (robot.getVision().getTapeY() > 50) {
+            if (robot.getVision().getTapeY() > 20) {//this number
                 if (Robot.debug)
                     SmartDashboard.putBoolean("Close to Peg", false);
                 robot.followX(0.3);
