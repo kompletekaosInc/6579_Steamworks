@@ -118,8 +118,8 @@ public class Drivetrain implements SubSystem {
         else{
             rightStopPower = 0.1;
         }
-        SmartDashboard.putNumber("leftStopPower",leftStopPower);
-        SmartDashboard.putNumber("rightStopPower",rightStopPower);
+        //SmartDashboard.putNumber("leftStopPower",leftStopPower);
+        //SmartDashboard.putNumber("rightStopPower",rightStopPower);
 	    setPower(leftStopPower,rightStopPower);
 
     }
