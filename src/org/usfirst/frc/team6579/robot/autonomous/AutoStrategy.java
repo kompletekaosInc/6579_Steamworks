@@ -78,7 +78,7 @@ public abstract class AutoStrategy {
             robot.publishSubSystemStats();
 
             // TODO:  need to refine what happens if there is no Tape showing in image, what value will y equal?
-            if (robot.getVision().getTapeY() > 20) {//this number
+            if (robot.getVision().getTapeY() > 20) {//this number is the distance to stop tracking. TODO: Recalibrate this number
                 if (Robot.debug)
                     SmartDashboard.putBoolean("Close to Peg", false);
                 robot.followX(0.3);

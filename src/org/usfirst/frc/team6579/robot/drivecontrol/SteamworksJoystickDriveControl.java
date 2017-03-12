@@ -50,12 +50,12 @@ public class SteamworksJoystickDriveControl extends JoystickDriveControl {
     //These are the buttons that are overridden
     protected void processButton1(Robot robot )
     {
-
+        robot.getVision().startTrackingPeg();
     }
     //These are the buttons that are overridden
     protected void processButton2(Robot robot )
     {
-
+        robot.getVision().stopTrackingPeg();
     }
     protected void processButton3(Robot robot )
     {

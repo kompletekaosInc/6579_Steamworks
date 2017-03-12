@@ -96,8 +96,8 @@ public class Robot extends IterativeRobot
 
 
 		// In future, create selector for if there is more than one drive control
-		driveControl = new DebugJoystickDriveControl();
-		//driveControl = new SteamworksJoystickDriveControl(); //DebugJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
+		//driveControl = new DebugJoystickDriveControl();
+		driveControl = new SteamworksJoystickDriveControl(); //DebugJoystickDriveControl(); // we only have one implementation, once we have more we will make a selector
 
 
         //Stick selector
