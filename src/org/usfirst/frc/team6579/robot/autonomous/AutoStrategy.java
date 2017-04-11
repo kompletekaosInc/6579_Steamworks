@@ -16,7 +16,7 @@ public abstract class AutoStrategy {
 
     // can be overridden but the default is to drive for 2 seconds to get to baseline
     protected long getMsToBaseline() {
-        return 2000;
+        return 1800;//changed from 2000
     }
 
     // can be overridden but default is to drive for 5 seconds
@@ -78,7 +78,7 @@ public abstract class AutoStrategy {
             robot.publishSubSystemStats();
 
             // TODO:  need to refine what happens if there is no Tape showing in image, what value will y equal?
-            if (robot.getVision().getTapeY() > 20) {//this number is the distance to stop tracking. TODO: Recalibrate this number
+            if (robot.getVision().getTapeY() > 10) {//this number is the distance to stop tracking. TODO: Recalibrate this number
                 if (Robot.debug)
                     SmartDashboard.putBoolean("Close to Peg", false);
                 robot.followX(0.3);
